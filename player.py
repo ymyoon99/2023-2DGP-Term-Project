@@ -47,8 +47,8 @@ class Idle:
 
     @staticmethod
     def exit(player, e):
-        if space_down(e):
-            player.fire_ball()
+        # if space_down(e):
+        #     player.fire_ball()
         pass
 
     @staticmethod
@@ -79,7 +79,6 @@ class Run:
 
     @staticmethod
     def do(player):
-        # boy.frame = (boy.frame + 1) % 8
         player.x += player.dir * RUN_SPEED_PPS * game_framework.frame_time
         player.x = clamp(25, player.x, 1600 - 25)
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
@@ -122,7 +121,7 @@ class StateMachine:
 
 
 class Player:
-    def __init__(self):
+    def __init__(self): # Player 초기 상태
         self.x, self.y = 100, 210  # 초기 위치
         self.frame = 0
         self.action = 4  # start motion
@@ -130,8 +129,10 @@ class Player:
         self.dir = 0
         self.image = load_image('player1_sheet.png')
         self.font_time = load_font('ENCR10B.TTF', 40)
+        self.font_stamina = load_font('ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.stamina = 100 # 초기 스태미나 값
         # self.timer
 
     def update(self):
@@ -143,15 +144,15 @@ class Player:
 
     def draw(self):
         self.state_machine.draw()
-        # self.font.draw(self.x - 10, self.y + 50, f'{self.timer:02d}', (255, 255, 0))
+        self.font_stamina.draw(self.x - 15, self.y + 55, f'{self.stamina:02d}', (60, 179, 113))
         self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
         draw_rectangle(*self.get_bb())
         # x1, y1, x2, y2 == *self.get_bb()
 
     # fill here
     def get_bb(self):
-        return self.x - 25, self.y - 50, self.x + 25, self.y + 50
-        # 값 4개짜리 Tuple로 바운딩 박스 값을 나타냄.
+        return self.x - 30, self.y - 50, self.x + 30, self.y + 40
+        # 값 4개짜리 Tuple
 
     def handle_collision(self, group, other):
         pass
