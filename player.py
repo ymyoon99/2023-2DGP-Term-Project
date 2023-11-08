@@ -1,7 +1,8 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle
+    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a
+
 import game_world
 import game_framework
 
@@ -13,15 +14,6 @@ def right_down(e):
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
 
-
-# def left_down(e):
-#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
-#
-#
-# def left_up(e):
-#     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
-
-
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
@@ -29,12 +21,12 @@ def space_down(e):
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
-
 # time_out = lambda e : e[0] == 'TIME_OUT'
 
 
+# PLAYER MOVEMENT SETTINGS
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_KMPH = 10.0  # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -48,13 +40,9 @@ class Idle:
 
     @staticmethod
     def enter(player, e):
-        if player.face_dir == -1:
-            player.action = 4
-        elif player.face_dir == 1:
-            player.action = 4
+        player.action = 4
         player.dir = 0
         player.frame = 0
-        player.wait_time = get_time()  # pico2d import 필요
         pass
 
     @staticmethod
@@ -66,8 +54,8 @@ class Idle:
     @staticmethod
     def do(player):
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
-        if get_time() - player.wait_time > 2:
-            player.state_machine.handle_event(('TIME_OUT', 0))
+        # if get_time() - player.wait_time > 2:
+        #     player.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(player):
@@ -135,16 +123,16 @@ class StateMachine:
 
 class Player:
     def __init__(self):
-        self.x, self.y = 100, 90
+        self.x, self.y = 100, 210  # 초기 위치
         self.frame = 0
-        self.action = 4 # start motion
+        self.action = 4  # start motion
         self.face_dir = 1
         self.dir = 0
         self.image = load_image('player1_sheet.png')
-        self.font = load_font('ENCR10B.TTF', 16)
+        self.font_time = load_font('ENCR10B.TTF', 40)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.timer = 10
+        # self.timer
 
     def update(self):
         self.state_machine.update()
@@ -152,19 +140,18 @@ class Player:
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
+
     def draw(self):
         self.state_machine.draw()
-        self.font.draw(self.x - 10, self.y + 50, f'{self.timer:02d}', (255, 255, 0))
+        # self.font.draw(self.x - 10, self.y + 50, f'{self.timer:02d}', (255, 255, 0))
+        self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
         draw_rectangle(*self.get_bb())
         # x1, y1, x2, y2 == *self.get_bb()
 
     # fill here
     def get_bb(self):
-        return self.x - 20, self.y - 50, self.x + 20, self.y + 50
+        return self.x - 25, self.y - 50, self.x + 25, self.y + 50
         # 값 4개짜리 Tuple로 바운딩 박스 값을 나타냄.
 
     def handle_collision(self, group, other):
-        if group == 'boy:ball':
-            self.ball_count += 1
-        if group == 'boy:zombie':
-            game_framework.quit()
+        pass
