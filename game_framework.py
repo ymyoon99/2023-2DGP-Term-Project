@@ -1,4 +1,6 @@
 import time
+from math import trunc
+
 
 def change_mode(mode):
     global stack
@@ -44,9 +46,10 @@ def run(start_mode):
     start_mode.init()
 
     global frame_time
+    global current_time
     frame_time = 0.0
     current_time = time.time()
-    while running:
+    while running: # 구동
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
@@ -59,3 +62,9 @@ def run(start_mode):
     while (len(stack) > 0):
         stack[-1].finish()
         stack.pop()
+
+def get_frame_time():
+    return frame_time
+
+def get_current_time():
+    return current_time
