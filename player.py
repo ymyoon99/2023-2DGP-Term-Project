@@ -17,6 +17,8 @@ def right_up(e):
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
+def space_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -53,6 +55,8 @@ class Idle:
 
     @staticmethod
     def do(player):
+        player.stamina += 1
+        if player.stamina > 99: player.stamina = 100
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
         # if get_time() - player.wait_time > 2:
         #     player.state_machine.handle_event(('TIME_OUT', 0))
@@ -72,13 +76,14 @@ class Run:
 
     @staticmethod
     def exit(player, e):
-        if space_down(e):
-            player.fire_ball()
+        # if space_down(e):
+        #     player.fire_ball()
 
         pass
 
     @staticmethod
     def do(player):
+        player.stamina -= 1
         player.x += player.dir * RUN_SPEED_PPS * game_framework.frame_time
         player.x = clamp(25, player.x, 1600 - 25)
         player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
@@ -88,16 +93,41 @@ class Run:
         player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
 
 
+class Walk:
+
+    @staticmethod
+    def enter(player, e):
+        if space_down(e):
+            player.dir, player.action, player.face_dir = 1, 0, 1
+
+
+    @staticmethod
+    def exit(player, e):
+        # if space_down(e):
+        #     player.fire_ball()
+        pass
+
+    @staticmethod
+    def do(player):
+        player.stamina += 1
+        if player.stamina > 99: player.stamina = 100
+        player.x += player.dir * RUN_SPEED_PPS / 3 * game_framework.frame_time
+        player.x = clamp(25, player.x, 1600 - 25)
+        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 10
+
+    @staticmethod
+    def draw(player):
+        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
 
 
 class StateMachine:
     def __init__(self, player):
         self.player = player
-        self.cur_state = Idle
+        self.cur_state = Idle # 초기 상태
         self.transitions = {
-            Idle: {right_down: Run, right_up: Run, time_out: Idle, space_down: Idle},
-            Run: {right_down: Idle, right_up: Idle, space_down: Run},
-
+            Idle: {right_down: Run, space_down: Walk},
+            Run: {right_up: Idle, space_down: Walk},
+            Walk: {space_up: Idle, right_down: Run}
         }
 
     def start(self):
@@ -127,7 +157,7 @@ class Player:
         self.action = 4  # start motion
         self.face_dir = 1
         self.dir = 0
-        self.image = load_image('player1_sheet.png')
+        self.image = load_image('runner1_sprite_sheet.png')
         self.font_time = load_font('ENCR10B.TTF', 40)
         self.font_stamina = load_font('ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
@@ -149,7 +179,7 @@ class Player:
         draw_rectangle(*self.get_bb())
         # x1, y1, x2, y2 == *self.get_bb()
 
-    # fill here
+
     def get_bb(self):
         return self.x - 30, self.y - 50, self.x + 30, self.y + 40
         # 값 4개짜리 Tuple
