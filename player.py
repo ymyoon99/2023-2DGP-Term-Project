@@ -16,22 +16,25 @@ def right_down(e):
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
 
+
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
 
 def space_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
 
+
 def a_key_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
+
 
 def a_key_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
 
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
-
-# time_out = lambda e : e[0] == 'TIME_OUT'
 
 
 # PLAYER MOVEMENT SETTINGS
@@ -43,7 +46,12 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION_8 = 8
+FRAMES_PER_ACTION_10 = 10
+
+PLAYER_1_GROUND = 210
+PLAYER_START_LINE = 100
+PLAYER_JUMP_MAX = 50
 
 
 class Idle:
@@ -56,17 +64,13 @@ class Idle:
 
     @staticmethod
     def exit(player, e):
-        # if space_down(e):
-        #     player.fire_ball()
         pass
 
     @staticmethod
     def do(player):
-        player.stamina += game_framework.get_frame_time()
+        player.stamina += game_framework.get_frame_time() * 5
         if player.stamina > 99: player.stamina = 100
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
-        # if get_time() - player.wait_time > 2:
-        #     player.state_machine.handle_event(('TIME_OUT', 0))
+        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
     @staticmethod
     def draw(player):
@@ -74,12 +78,12 @@ class Idle:
 
 
 class Run:
-# 화면에 1부터 3초까지 증가하는 숫자 보이면서, 특정 버튼 입력 이벤트 3초 마다 한번 씩, 실패하거나 더 누르면 넘어짐.
+
     @staticmethod
     def enter(player, e):
-        if right_down(e):  # 오른쪽으로 RUN
-            player.dir, player.action, player.face_dir = 1, 2, 1
-
+        player.stamina -= 20
+        if right_down(e):
+            player.action = 2
 
     @staticmethod
     def exit(player, e):
@@ -89,11 +93,11 @@ class Run:
 
     @staticmethod
     def do(player):
-        player.stamina -= game_framework.get_frame_time() * 5
+        player.stamina -= game_framework.get_frame_time() * 10
         if player.stamina < 0: player.stamina = 0
-        player.x += player.dir * RUN_SPEED_PPS * game_framework.get_frame_time()
+        player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
         player.x = clamp(25, player.x, 1280 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+        player.frame = (player.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
     def draw(player):
@@ -105,8 +109,7 @@ class Walk:
     @staticmethod
     def enter(player, e):
         if space_down(e):
-            player.dir, player.action, player.face_dir = 1, 0, 1
-
+            player.action = 0
 
     @staticmethod
     def exit(player, e):
@@ -117,10 +120,10 @@ class Walk:
     @staticmethod
     def do(player):
         player.stamina += game_framework.get_frame_time()
-        # if player.stamina > 99: player.stamina = 100
-        player.x += player.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
+        if player.stamina > 99: player.stamina = 100
+        player.x += RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
         player.x = clamp(25, player.x, 1600 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
+        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
     def draw(player):
@@ -131,8 +134,13 @@ class Jump:
 
     @staticmethod
     def enter(player, e):
+        player.stamina -= 20
         if a_key_down(e):
-            player.action, player.face_dir = 3, 1
+            player.action = 3
+        player.wait_time = get_time()
+        player.jump = 2
+        if player.jump == 1:
+            player.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def exit(player, e):
@@ -140,11 +148,19 @@ class Jump:
 
     @staticmethod
     def do(player):
-        player.stamina = player.stamina - 50
-        if player.stamina > 99: player.stamina = 100
-        player.x += player.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
-        player.x = clamp(25, player.x, 1600 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
+        if player.jump == 2:
+            if get_time() - player.wait_time < 1:
+                player.y += RUN_SPEED_PPS * game_framework.get_frame_time()
+                player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+            elif get_time() - player.wait_time >= 1:
+                player.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
+                player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+                if player.y <= PLAYER_1_GROUND:
+                    player.state_machine.handle_event(('TIME_OUT', 0))
+                    player.jump = 0
+
+        player.x = clamp(25, player.x, 1280 - 25)
+        player.frame = (player.frame + FRAMES_PER_ACTION_10 * 0.2 * game_framework.get_frame_time()) % 8
 
     @staticmethod
     def draw(player):
@@ -156,8 +172,8 @@ class Hurt:
     @staticmethod
     def enter(player, e):
         player.action = 7
+        player.wait_time = get_time()
         pass
-
 
     @staticmethod
     def exit(player, e):
@@ -165,8 +181,9 @@ class Hurt:
 
     @staticmethod
     def do(player):
-        player.stamina = 20
-        player.frame = (player.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
+        if get_time() - player.wait_time > 2:
+            player.state_machine.handle_event(('TIME_OUT', 0))
+        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
     def draw(player):
@@ -176,13 +193,13 @@ class Hurt:
 class StateMachine:
     def __init__(self, player):
         self.player = player
-        self.cur_state = Idle # 초기 상태
+        self.cur_state = Idle  # 초기 상태
         self.transitions = {
-            Idle: {right_down: Run, space_down: Walk},
-            Run: {right_up: Idle, space_down: Walk},
-            Walk: {space_up: Idle, right_down: Run}
-            # Jump: {}
-            # Hurt: {time_out: Idle}
+            Idle: {right_down: Run, space_down: Walk, a_key_down: Jump},
+            Run: {right_up: Idle, space_down: Walk, a_key_down: Jump},
+            Walk: {space_up: Idle, right_down: Run, a_key_down: Jump},
+            Jump: {a_key_down: Jump, time_out : Idle },
+            Hurt: {time_out: Idle}
         }
 
     def start(self):
@@ -206,18 +223,18 @@ class StateMachine:
 
 
 class Player:
-    def __init__(self): # Player 초기 상태
-        self.x, self.y = 100, 210  # 초기 위치
+    def __init__(self):  # Player 초기 상태
+        self.x, self.y = PLAYER_START_LINE, PLAYER_1_GROUND  # 초기 위치
         self.frame = 0
-        self.action = 4  # start motion
-        self.face_dir = 1
+        self.action = 4  # 시작 모션
+        self.stamina = 100  # 초기 스태미나 값
         self.image = load_image('runner1_sprite_sheet.png')
         self.font_time = load_font('ENCR10B.TTF', 40)
         self.font_stamina = load_font('ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.stamina = 100 # 초기 스태미나 값
-        # self.timer
+        self.jump = 0
+
 
     def update(self):
         self.state_machine.update()
@@ -225,18 +242,14 @@ class Player:
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
-
     def draw(self):
         self.state_machine.draw()
         self.font_stamina.draw(self.x - 15, self.y + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
         self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
         draw_rectangle(*self.get_bb())
-        # x1, y1, x2, y2 == *self.get_bb()
 
-
-    def get_bb(self):
+    def get_bb(self):  # 히트 박스
         return self.x - 30, self.y - 50, self.x + 30, self.y + 40
-        # 값 4개짜리 Tuple
 
     def handle_collision(self, group, other):
         pass
