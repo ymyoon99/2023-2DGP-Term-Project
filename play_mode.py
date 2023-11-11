@@ -6,6 +6,7 @@ import game_framework
 import game_world
 from background import Background
 from player import Player
+from hurdle import Hurdle
 
 
 # boy = None
@@ -23,6 +24,7 @@ def handle_events():
 def init():
     global grass
     global player1
+    global hurdle
 
     running = True
 
@@ -31,6 +33,9 @@ def init():
 
     player1 = Player()
     game_world.add_object(player1, 1)
+
+    hurdle = Hurdle()
+    game_world.add_object(hurdle, 1)
 
     # zombies = [Zombie() for _ in range(5)]
     # game_world.add_objects(zombies, 1)  # 레이어 1번에 좀비 5마리 추가.

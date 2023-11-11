@@ -12,6 +12,6 @@ class Background:
         self.image.draw(640, 360)
 
     def get_bb(self):
-        return 0, 0, 1600-1, 0
+        return 0, 0, 0, 0
 
 
