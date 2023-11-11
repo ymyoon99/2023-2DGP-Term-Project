@@ -6,7 +6,7 @@ class EndLine:
 
     def __init__(self):
         self.x, self.y = 1080, 520
-        self.image = load_image('end_flag.png')
+        self.image = load_image('./resource/end_flag.png')
 
     def update(self):
         pass

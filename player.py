@@ -229,9 +229,9 @@ class Player:
         self.frame = 0
         self.action = 4  # 시작 모션
         self.stamina = 100  # 초기 스태미나 값
-        self.image = load_image('runner1_sprite_sheet.png')
-        self.font_time = load_font('ENCR10B.TTF', 40)
-        self.font_stamina = load_font('ENCR10B.TTF', 20)
+        self.image = load_image('./resource/runner1_sprite_sheet.png')
+        self.font_time = load_font('./resource/ENCR10B.TTF', 40)
+        self.font_stamina = load_font('./resource/ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump = 0

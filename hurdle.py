@@ -8,7 +8,7 @@ class Hurdle:
 
     def __init__(self):
         self.x, self.y = random.randint(300, 1000), 210-20
-        self.image = load_image('hurdle.png')
+        self.image = load_image('./resource/hurdle.png')
 
     def update(self):
         pass
