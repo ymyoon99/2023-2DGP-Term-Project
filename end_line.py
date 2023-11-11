@@ -1,14 +1,12 @@
 from pico2d import *
-import random
-import math
 import game_framework
 
 
-class Hurdle:
+class EndLine:
 
     def __init__(self):
-        self.x, self.y = random.randint(300, 1000), 210-20
-        self.image = load_image('hurdle.png')
+        self.x, self.y = 1080, 520
+        self.image = load_image('end_flag.png')
 
     def update(self):
         pass
@@ -21,7 +19,7 @@ class Hurdle:
         pass
 
     def get_bb(self):
-        return self.x - 23, self.y - 30, self.x + 23, self.y + 30
+        return self.x - 16, self.y - 1000, self.x + 23, self.y + 30
 
     def handle_collision(self, group, other):
         pass

@@ -80,7 +80,7 @@ class Run:
 
     @staticmethod
     def enter(player, e):
-        player.stamina -= 20
+        player.stamina -= 10
         if right_down(e):
             player.action = 2
 
@@ -134,12 +134,9 @@ class Jump:
     @staticmethod
     def enter(player, e):
         player.stamina -= 20
-        if a_key_down(e):
+        if a_key_down(e):  # 추가된 조건
             player.action = 3
         player.wait_time = get_time()
-        player.jump = 2
-        if player.jump == 1:
-            player.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def exit(player, e):
@@ -147,16 +144,14 @@ class Jump:
 
     @staticmethod
     def do(player):
-        if player.jump == 2:
-            if get_time() - player.wait_time < 1:
-                player.y += RUN_SPEED_PPS * game_framework.get_frame_time()
-                player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-            elif get_time() - player.wait_time >= 1:
-                player.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
-                player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-                if player.y <= PLAYER_1_GROUND:
-                    player.state_machine.handle_event(('TIME_OUT', 0))
-                    player.jump = 0
+        if get_time() - player.wait_time < 1:
+            player.y += RUN_SPEED_PPS * 1.3 * game_framework.get_frame_time()
+            player.x += RUN_SPEED_PPS * 1.5 * game_framework.get_frame_time()
+        elif get_time() - player.wait_time >= 1:
+            player.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
+            player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+            if player.y <= PLAYER_1_GROUND:
+                player.state_machine.handle_event(('TIME_OUT', 0))
 
         player.x = clamp(25, player.x, 1280 - 25)
         player.frame = (player.frame + FRAMES_PER_ACTION_10 * 0.2 * game_framework.get_frame_time()) % 8
@@ -197,7 +192,7 @@ class StateMachine:
             Idle: {right_down: Run, space_down: Walk, a_key_down: Jump},
             Run: {right_up: Idle, space_down: Walk, a_key_down: Jump},
             Walk: {space_up: Idle, right_down: Run, a_key_down: Jump},
-            Jump: {a_key_down: Jump, time_out : Idle },
+            Jump: {a_key_down: Jump, time_out: Idle},
             Hurt: {time_out: Idle}
         }
 
@@ -208,17 +203,24 @@ class StateMachine:
         self.cur_state.do(self.player)
 
     def handle_event(self, e):
+
+        if self.cur_state == Jump and a_key_down(e): # 2단 점프 방지
+            return False
+
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
                 self.cur_state.exit(self.player, e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.player, e)
+
                 return True
 
         return False
 
     def draw(self):
         self.cur_state.draw(self.player)
+
+
 
 
 class Player:
@@ -233,6 +235,7 @@ class Player:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump = 0
+        self.can_jump = True
 
 
     def update(self):
@@ -248,7 +251,7 @@ class Player:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스
-        return self.x - 30, self.y - 50, self.x + 30, self.y + 40
+        return self.x - 25, self.y - 50, self.x + 20, self.y + 40
 
     def handle_collision(self, group, other):
         pass

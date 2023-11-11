@@ -7,6 +7,7 @@ import game_world
 from background import Background
 from player import Player
 from hurdle import Hurdle
+from end_line import EndLine
 
 
 # boy = None
@@ -25,6 +26,7 @@ def init():
     global grass
     global player1
     global hurdle
+    global end_line
 
     running = True
 
@@ -36,6 +38,9 @@ def init():
 
     hurdle = Hurdle()
     game_world.add_object(hurdle, 1)
+
+    end_line = EndLine()
+    game_world.add_object(end_line, 1)
 
     # zombies = [Zombie() for _ in range(5)]
     # game_world.add_objects(zombies, 1)  # 레이어 1번에 좀비 5마리 추가.
