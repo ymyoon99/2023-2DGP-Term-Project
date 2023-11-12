@@ -1,9 +1,8 @@
-# 이것은 각 상태들을 객체로 구현한 것임.
 import time
 from math import trunc
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a
+    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a, SDLK_UP
 
 import game_world
 import game_framework
@@ -16,6 +15,22 @@ def right_down(e):
 
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+
+
+def left_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+
+
+def left_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+
+
+def up_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+
+
+def up_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
 
 def space_down(e):
@@ -83,7 +98,7 @@ class Run:
     @staticmethod
     def enter(runner, e):
         runner.stamina -= 5
-        if right_down(e):
+        if up_down(e):
             runner.action = 2
 
     @staticmethod
@@ -109,8 +124,13 @@ class Walk:
 
     @staticmethod
     def enter(runner, e):
-        if space_down(e):
+        if right_down(e):
             runner.action = 0
+            runner.dir = 1
+        if left_down(e):
+            runner.action = 0
+            runner.dir = -1
+
 
     @staticmethod
     def exit(runner, e):
@@ -120,7 +140,7 @@ class Walk:
     def do(runner):
         runner.stamina += game_framework.get_frame_time()
         if runner.stamina > 99: runner.stamina = 100
-        runner.x += RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
+        runner.x += runner.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
         runner.x = clamp(25, runner.x, 1600 - 25)
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
@@ -191,9 +211,9 @@ class StateMachine:
         self.runner = runner
         self.cur_state = Idle  # 초기 상태
         self.transitions = {
-            Idle: {right_down: Run, space_down: Walk, a_key_down: Jump},
-            Run: {right_up: Idle, space_down: Walk, a_key_down: Jump},
-            Walk: {space_up: Idle, right_down: Run, a_key_down: Jump},
+            Idle: {left_down: Walk, right_down: Walk, up_down: Run, a_key_down: Jump},
+            Run: {up_up: Idle, left_down: Walk, right_down: Walk, a_key_down: Jump},
+            Walk: {left_up: Idle, right_up: Idle, up_down: Run, a_key_down: Jump},
             Jump: {time_out: Idle},
             Hurt: {time_out: Idle}
         }
@@ -235,6 +255,7 @@ class Runner:
         self.frame = 0
         self.action = 4  # 시작 모션
         self.stamina = 100  # 초기 스태미나 값
+        self.dir = 0
         self.image = load_image('./resource/runner1_sprite_sheet.png')
         self.font_time = load_font('./resource/ENCR10B.TTF', 40)
         self.font_stamina = load_font('./resource/ENCR10B.TTF', 20)
