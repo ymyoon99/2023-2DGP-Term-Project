@@ -179,6 +179,7 @@ class Hurt:
     def do(runner):
         if get_time() - runner.wait_time > 2:
             runner.state_machine.handle_event(('TIME_OUT', 0))
+            runner.y = PLAYER_1_GROUND # Y축 보정
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * 0.1 * game_framework.get_frame_time()) % 8
 
     @staticmethod
