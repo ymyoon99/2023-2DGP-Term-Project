@@ -38,6 +38,7 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
+
 # PLAYER MOVEMENT SETTINGS
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -57,171 +58,175 @@ PLAYER_START_LINE = 100
 class Idle:
 
     @staticmethod
-    def enter(player, e):
-        player.action = 4
-        player.frame = 0
+    def enter(runner, e):
+        runner.action = 4
+        runner.frame = 0
         pass
 
     @staticmethod
-    def exit(player, e):
+    def exit(runner, e):
         pass
 
     @staticmethod
-    def do(player):
-        player.stamina += game_framework.get_frame_time() * 5
-        if player.stamina > 99: player.stamina = 100
-        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
+    def do(runner):
+        runner.stamina += game_framework.get_frame_time() * 5
+        if runner.stamina > 99: runner.stamina = 100
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
     @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
+    def draw(runner):
+        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Run:
 
     @staticmethod
-    def enter(player, e):
-        player.stamina -= 10
+    def enter(runner, e):
+        runner.stamina -= 10
         if right_down(e):
-            player.action = 2
+            runner.action = 2
 
     @staticmethod
-    def exit(player, e):
+    def exit(runner, e):
         # if space_down(e):
         #     player.fire_ball()
         pass
 
     @staticmethod
-    def do(player):
-        player.stamina -= game_framework.get_frame_time() * 10
-        if player.stamina < 0: player.stamina = 0
-        player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-        player.x = clamp(25, player.x, 1280 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+    def do(runner):
+        runner.stamina -= game_framework.get_frame_time() * 10
+        if runner.stamina < 0: runner.stamina = 0
+        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+        runner.x = clamp(25, runner.x, 1280 - 25)
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
+    def draw(runner):
+        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Walk:
 
     @staticmethod
-    def enter(player, e):
+    def enter(runner, e):
         if space_down(e):
-            player.action = 0
+            runner.action = 0
 
     @staticmethod
-    def exit(player, e):
+    def exit(runner, e):
         # if space_down(e):
         #     player.fire_ball()
         pass
 
     @staticmethod
-    def do(player):
-        player.stamina += game_framework.get_frame_time()
-        if player.stamina > 99: player.stamina = 100
-        player.x += RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
-        player.x = clamp(25, player.x, 1600 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+    def do(runner):
+        runner.stamina += game_framework.get_frame_time()
+        if runner.stamina > 99: runner.stamina = 100
+        runner.x += RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
+        runner.x = clamp(25, runner.x, 1600 - 25)
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
+    def draw(runner):
+        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Jump:
 
     @staticmethod
-    def enter(player, e):
-        player.stamina -= 20
+    def enter(runner, e):
+        runner.stamina -= 20
         if a_key_down(e):  # 추가된 조건
-            player.action = 3
-        player.wait_time = get_time()
+            runner.action = 3
+        runner.wait_time = get_time()
 
     @staticmethod
-    def exit(player, e):
+    def exit(runner, e):
         pass
 
     @staticmethod
-    def do(player):
-        if get_time() - player.wait_time < 1:
-            player.y += RUN_SPEED_PPS * 1.3 * game_framework.get_frame_time()
-            player.x += RUN_SPEED_PPS * 1.5 * game_framework.get_frame_time()
-        elif get_time() - player.wait_time >= 1:
-            player.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
-            player.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-            if player.y <= PLAYER_1_GROUND:
-                player.state_machine.handle_event(('TIME_OUT', 0))
+    def do(runner):
+        if get_time() - runner.wait_time < 1:
+            runner.y += RUN_SPEED_PPS * 1.3 * game_framework.get_frame_time()
+            runner.x += RUN_SPEED_PPS * 1.5 * game_framework.get_frame_time()
+        elif get_time() - runner.wait_time >= 1:
+            runner.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
+            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+            if runner.y <= PLAYER_1_GROUND:
+                runner.state_machine.handle_event(('TIME_OUT', 0))
 
-        player.x = clamp(25, player.x, 1280 - 25)
-        player.frame = (player.frame + FRAMES_PER_ACTION_10 * 0.2 * game_framework.get_frame_time()) % 8
+        runner.x = clamp(25, runner.x, 1280 - 25)
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * 0.2 * game_framework.get_frame_time()) % 8
 
     @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
+    def draw(runner):
+        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Hurt:
 
     @staticmethod
-    def enter(player, e):
-        player.action = 7
-        player.wait_time = get_time()
+    def enter(runner, e):
+        runner.action = 7
+        runner.wait_time = get_time()
         pass
 
     @staticmethod
-    def exit(player, e):
+    def exit(runner, e):
         pass
 
     @staticmethod
-    def do(player):
-        if get_time() - player.wait_time > 2:
-            player.state_machine.handle_event(('TIME_OUT', 0))
-        player.frame = (player.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+    def do(runner):
+        if get_time() - runner.wait_time > 2:
+            runner.state_machine.handle_event(('TIME_OUT', 0))
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * 0.1 * game_framework.get_frame_time()) % 8
 
     @staticmethod
-    def draw(player):
-        player.image.clip_draw(int(player.frame) * 556, player.action * 504, 556, 504, player.x, player.y, 100, 100)
+    def draw(runner):
+        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class StateMachine:
-    def __init__(self, player):
-        self.player = player
+    def __init__(self, runner):
+        self.runner = runner
         self.cur_state = Idle  # 초기 상태
         self.transitions = {
             Idle: {right_down: Run, space_down: Walk, a_key_down: Jump},
             Run: {right_up: Idle, space_down: Walk, a_key_down: Jump},
             Walk: {space_up: Idle, right_down: Run, a_key_down: Jump},
-            Jump: {a_key_down: Jump, time_out: Idle},
+            Jump: {time_out: Idle},
             Hurt: {time_out: Idle}
         }
 
     def start(self):
-        self.cur_state.enter(self.player, ('NONE', 0))
+        self.cur_state.enter(self.runner, ('NONE', 0))
 
     def update(self):
-        self.cur_state.do(self.player)
+        self.cur_state.do(self.runner)
 
     def handle_event(self, e):
 
         if self.cur_state == Jump and a_key_down(e): # 2단 점프 방지
             return False
 
+        if e[0] == 'COLLISION':
+            self.cur_state.exit(self.runner, e)
+            self.cur_state = Hurt
+            self.cur_state.enter(self.runner, e)
+            return True
+
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
-                self.cur_state.exit(self.player, e)
+                self.cur_state.exit(self.runner, e)
                 self.cur_state = next_state
-                self.cur_state.enter(self.player, e)
+                self.cur_state.enter(self.runner, e)
 
                 return True
 
         return False
 
     def draw(self):
-        self.cur_state.draw(self.player)
-
-
+        self.cur_state.draw(self.runner)
 
 
 class Runner:
@@ -235,14 +240,12 @@ class Runner:
         self.font_stamina = load_font('./resource/ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.jump = 0
-        self.can_jump = True
-
 
     def update(self):
         self.state_machine.update()
 
     def handle_event(self, event):
+
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
@@ -256,6 +259,7 @@ class Runner:
 
     def handle_collision(self, group, other):
         if group == 'player1:hurdle':
-            pass
+            self.state_machine.handle_event(('COLLISION', 0))
         if group == 'player1:endpoint':
             game_framework.change_mode(title_mode)
+
