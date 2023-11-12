@@ -82,7 +82,7 @@ class Run:
 
     @staticmethod
     def enter(runner, e):
-        runner.stamina -= 10
+        runner.stamina -= 5
         if right_down(e):
             runner.action = 2
 
@@ -114,8 +114,6 @@ class Walk:
 
     @staticmethod
     def exit(runner, e):
-        # if space_down(e):
-        #     player.fire_ball()
         pass
 
     @staticmethod
@@ -167,6 +165,7 @@ class Hurt:
 
     @staticmethod
     def enter(runner, e):
+        runner.stamina += 20
         runner.action = 7
         runner.wait_time = get_time()
         pass
