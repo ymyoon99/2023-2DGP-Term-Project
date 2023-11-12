@@ -37,22 +37,11 @@ def init():
     player1 = Player()
     game_world.add_object(player1, 1)
 
-    hurdle = Hurdle()
-    game_world.add_object(hurdle, 1)
+    hurdle = [Hurdle() for _ in range(2)]
+    game_world.add_objects(hurdle, 1)
 
     end_line = EndLine()
     game_world.add_object(end_line, 1)
-
-    # zombies = [Zombie() for _ in range(5)]
-    # game_world.add_objects(zombies, 1)  # 레이어 1번에 좀비 5마리 추가.
-
-    # 볼을 바닥에 뿌림
-    # global balls
-    # balls = [Ball(random.randint(100, 1600-100), 60, 0) for _ in range(30)]
-    # game_world.add_objects(balls,1)
-
-    # zombies = [Zombie() for _ in range(5)]
-    # game_world.add_objects(zombies, 1) # 레이어 1번에 좀비 5마리 추가.
 
     # #충돌 상황을 등록... boy와 balls들의 충돌 상황을 등록.
     # game_world.add_collision_pair('boy:ball', boy, None)
