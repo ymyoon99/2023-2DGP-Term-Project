@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 
 
-class EndLine:
+class Endpoint:
 
     def __init__(self):
         self.x, self.y = 1080, 520
@@ -23,8 +23,5 @@ class EndLine:
 
     def handle_collision(self, group, other):
         pass
-        # if group == 'ball:zombie':
-        #     pass
-        # if group == 'boy:zombie':
-        #     game_framework.quit()
+
 

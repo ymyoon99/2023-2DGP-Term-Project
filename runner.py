@@ -7,6 +7,7 @@ from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYU
 
 import game_world
 import game_framework
+import title_mode
 
 
 def right_down(e):
@@ -223,7 +224,7 @@ class StateMachine:
 
 
 
-class Player:
+class Runner:
     def __init__(self):  # Player 초기 상태
         self.x, self.y = PLAYER_START_LINE, PLAYER_1_GROUND  # 초기 위치
         self.frame = 0
@@ -254,4 +255,7 @@ class Player:
         return self.x - 25, self.y - 50, self.x + 20, self.y + 40
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'player1:hurdle':
+            pass
+        if group == 'player1:endpoint':
+            game_framework.change_mode(title_mode)

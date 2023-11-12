@@ -2,6 +2,7 @@ from pico2d import *
 import random
 import math
 import game_framework
+import game_world
 
 
 class Hurdle:
@@ -24,9 +25,6 @@ class Hurdle:
         return self.x - 23, self.y - 30, self.x + 23, self.y + 30
 
     def handle_collision(self, group, other):
-        pass
-        # if group == 'ball:zombie':
-        #     pass
-        # if group == 'boy:zombie':
-        #     game_framework.quit()
+        if group == 'player1:hurdle':
+             game_world.remove_object(self)
 

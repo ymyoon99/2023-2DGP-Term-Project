@@ -6,9 +6,9 @@ import game_framework
 import game_world
 import title_mode
 from background import Background
-from player import Player
+from runner import Runner
 from hurdle import Hurdle
-from end_line import EndLine
+from endpoint import Endpoint
 
 
 # boy = None
@@ -24,37 +24,31 @@ def handle_events():
             player1.handle_event(event)
 
 def init():
-    global grass
+    global background
     global player1
-    global hurdle
-    global end_line
+    global endpoint
 
     running = True
 
-    grass = Background()
-    game_world.add_object(grass, 0)
+    background = Background()
+    game_world.add_object(background, 0)
 
-    player1 = Player()
+    player1 = Runner()
     game_world.add_object(player1, 1)
 
-    hurdle = [Hurdle() for _ in range(2)]
-    game_world.add_objects(hurdle, 1)
+    hurdles = [Hurdle() for _ in range(2)]
+    game_world.add_objects(hurdles, 1)
 
-    end_line = EndLine()
-    game_world.add_object(end_line, 1)
+    endpoint = Endpoint()
+    game_world.add_object(endpoint, 1)
 
-    # #충돌 상황을 등록... boy와 balls들의 충돌 상황을 등록.
-    # game_world.add_collision_pair('boy:ball', boy, None)
-    # for ball in balls:
-    #     game_world.add_collision_pair('boy:ball', None, ball)
+    # 충돌 상황 등록
+    game_world.add_collision_pair('player1:hurdle', player1, None)
+    for hurdle in hurdles:
+        game_world.add_collision_pair('player1:hurdle', None, hurdle)
 
-    # game_world.add_collision_pair('boy:zombie', boy, None)
-    # for zombie in zombies:
-    #     game_world.add_collision_pair('boy:zombie', None, zombie)
-    #
-    # game_world.add_collision_pair('ball:zombie', ball, None)
-    # for zombie in zombies:
-    #     game_world.add_collision_pair('ball:zombie', None, zombie)
+    game_world.add_collision_pair('player1:endpoint', player1, None)
+    game_world.add_collision_pair('player1:endpoint', None, endpoint)
 
 
 
