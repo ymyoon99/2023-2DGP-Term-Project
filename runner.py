@@ -109,11 +109,14 @@ class Run:
 
     @staticmethod
     def do(runner):
-        runner.stamina -= game_framework.get_frame_time() * 10
-        if runner.stamina < 0: runner.stamina = 0
-        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-        runner.x = clamp(25, runner.x, 1280 - 25)
-        runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+        runner.stamina -= game_framework.get_frame_time() * 20
+        if runner.stamina <= 0:
+            runner.stamina = 0
+            runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
+        else:
+            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+            runner.x = clamp(25, runner.x, 1280 - 25)
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
     @staticmethod
     def draw(runner):
