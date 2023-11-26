@@ -65,6 +65,3 @@ def run(start_mode):
 
 def get_frame_time():
     return frame_time
-
-def get_current_time():
-    return current_time
