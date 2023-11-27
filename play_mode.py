@@ -34,16 +34,16 @@ def init():
     server.runner = Runner()
     game_world.add_object(server.runner, 1)
 
-    server.hurdle = [Hurdle() for _ in range(2)]
+    server.hurdle = [Hurdle() for _ in range(10)]
     game_world.add_objects(server.hurdle, 1)
 
     server.endpoint = Endpoint()
     game_world.add_object(server.endpoint, 1)
 
     # 충돌 상황 등록
-    # game_world.add_collision_pair('runner:hurdle', server.runner, None)
-    # for hurdle in server.hurdle:
-    #     game_world.add_collision_pair('runner:hurdle', None, server.hurdle)
+    game_world.add_collision_pair('runner:hurdle', server.runner, None)
+    for hurdle in server.hurdle:
+        game_world.add_collision_pair('runner:hurdle', None, hurdle)
 
     game_world.add_collision_pair('runner:endpoint', server.runner, None)
     game_world.add_collision_pair('runner:endpoint', None, server.endpoint)

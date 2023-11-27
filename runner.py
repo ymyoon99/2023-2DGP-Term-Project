@@ -147,8 +147,7 @@ class Walk:
         runner.stamina += game_framework.get_frame_time()
         if runner.stamina > STAMINA_MAX - 1: runner.stamina = STAMINA_MAX
         runner.x += runner.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
-        runner.x = clamp(25, runner.x, 1600 - 25)
-        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
     # @staticmethod
     # def draw(runner):
@@ -163,6 +162,8 @@ class Jump:
         if a_key_down(e):  # 추가된 조건
             runner.action = 3
         runner.wait_time = get_time()
+        runner.frame = 0
+        runner.animation_done = False
 
     @staticmethod
     def exit(runner, e):
@@ -171,16 +172,18 @@ class Jump:
     @staticmethod
     def do(runner):
         if get_time() - runner.wait_time < 1:
-            runner.y += RUN_SPEED_PPS * 1.3 * game_framework.get_frame_time()
-            runner.x += RUN_SPEED_PPS * 1.5 * game_framework.get_frame_time()
+            runner.y += RUN_SPEED_PPS * game_framework.get_frame_time()
+            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
         elif get_time() - runner.wait_time >= 1:
             runner.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
             runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
             if runner.y <= PLAYER_1_GROUND:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
 
-        runner.x = clamp(25, runner.x, 1280 - 25)
-        runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+        if not runner.animation_done:
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            if int(runner.frame) == 7:
+                runner.animation_done = True
 
     # @staticmethod
     # def draw(runner):
@@ -195,7 +198,7 @@ class Hurt:
         runner.action = 7
         runner.wait_time = get_time()
         runner.animation_done = False
-
+        runner.frame = 0
 
     @staticmethod
     def exit(runner, e):
@@ -204,13 +207,10 @@ class Hurt:
     @staticmethod
     def do(runner):
         if not runner.animation_done:
-            # Play the animation
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
-
-            if int(runner.frame) == 7:
-                runner.animation_done = True  # Set animation_done to True when animation is completed
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+            if int(runner.frame) == 9:
+                runner.animation_done = True
         else:
-            # Character is now in the last frame and doesn't move
             if get_time() - runner.wait_time > 2:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
