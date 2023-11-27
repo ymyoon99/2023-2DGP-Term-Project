@@ -71,6 +71,8 @@ FRAMES_PER_ACTION_10 = 10
 PLAYER_1_GROUND = 210
 PLAYER_START_LINE = 100
 
+STAMINA_MAX = 100000000000
+
 
 class Idle:
 
@@ -87,12 +89,12 @@ class Idle:
     @staticmethod
     def do(runner):
         runner.stamina += game_framework.get_frame_time() * 5
-        if runner.stamina > 99: runner.stamina = 100
+        if runner.stamina > STAMINA_MAX - 1: runner.stamina = STAMINA_MAX
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
-    @staticmethod
-    def draw(runner):
-        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
+    # @staticmethod
+    # def draw(runner):
+    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Run:
@@ -117,12 +119,11 @@ class Run:
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
         else:
             runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-            runner.x = clamp(25, runner.x, 1280 - 25)
             runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
-    @staticmethod
-    def draw(runner):
-        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
+    # @staticmethod
+    # def draw(runner):
+    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Walk:
@@ -144,14 +145,14 @@ class Walk:
     @staticmethod
     def do(runner):
         runner.stamina += game_framework.get_frame_time()
-        if runner.stamina > 99: runner.stamina = 100
+        if runner.stamina > STAMINA_MAX - 1: runner.stamina = STAMINA_MAX
         runner.x += runner.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
         runner.x = clamp(25, runner.x, 1600 - 25)
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
-    @staticmethod
-    def draw(runner):
-        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
+    # @staticmethod
+    # def draw(runner):
+    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Jump:
@@ -181,9 +182,9 @@ class Jump:
         runner.x = clamp(25, runner.x, 1280 - 25)
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
-    @staticmethod
-    def draw(runner):
-        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
+    # @staticmethod
+    # def draw(runner):
+    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Hurt:
@@ -215,9 +216,9 @@ class Hurt:
                 runner.y = PLAYER_1_GROUND  # Y축 보정
 
 
-    @staticmethod
-    def draw(runner):
-        runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
+    # @staticmethod
+    # def draw(runner):
+    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class StateMachine:
@@ -260,8 +261,8 @@ class StateMachine:
 
         return False
 
-    def draw(self):
-        self.cur_state.draw(self.runner)
+    # def draw(self):
+    #     self.cur_state.draw(self.runner)
 
 
 class Runner:
@@ -269,7 +270,7 @@ class Runner:
         self.x, self.y = PLAYER_START_LINE, PLAYER_1_GROUND  # 초기 위치
         self.frame = 0
         self.action = 4  # 시작 모션
-        self.stamina = 100  # 초기 스태미나 값
+        self.stamina = STAMINA_MAX  # 초기 스태미나 값
         self.dir = 0
         self.image = load_image('./resource/runner1_sprite_sheet.png')
         self.font_time = load_font('./resource/ENCR10B.TTF', 40)
@@ -287,12 +288,14 @@ class Runner:
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
-        self.state_machine.draw()
-        self.font_stamina.draw(self.x - 15, self.y + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
+        sx, sy = self.x - server.background.window_left, self.y - server.background.window_bottom
+        self.image.clip_draw(int(self.frame) * 556, self.action * 504, 556, 504, sx, sy, 100, 100)
+
+        # NUM_DRAW
+        self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
         self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
         self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
-        draw_rectangle(*self.get_bb())
-
+        draw_rectangle(sx - 25, sy - 50, sx + 20, sy + 40)
 
     def get_bb(self):  # 히트 박스
         return self.x - 25, self.y - 50, self.x + 20, self.y + 40
