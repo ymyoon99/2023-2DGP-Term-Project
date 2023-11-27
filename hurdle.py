@@ -25,6 +25,6 @@ class Hurdle:
         return self.x - 23, self.y - 30, self.x + 23, self.y + 30
 
     def handle_collision(self, group, other):
-        if group == 'player1:hurdle':
+        if group == 'runner:hurdle':
              game_world.remove_object(self)
 

@@ -2,11 +2,12 @@ import time
 from math import trunc
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a, SDLK_UP
+    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a, SDLK_UP, get_canvas_width, get_canvas_height
 
 import game_world
 import game_framework
 import play_mode
+import server
 import title_mode
 
 
@@ -237,6 +238,7 @@ class StateMachine:
     def update(self):
         self.cur_state.do(self.runner)
 
+
     def handle_event(self, e):
 
         if self.cur_state == Jump and a_key_down(e): # 2단 점프 방지
@@ -277,9 +279,11 @@ class Runner:
 
     def update(self):
         self.state_machine.update()
+        self.x = clamp(50.0, self.x, server.background.w - 50.0)
+        self.y = clamp(50.0, self.y, server.background.h - 50.0)
+
 
     def handle_event(self, event):
-
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
@@ -289,13 +293,14 @@ class Runner:
         self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
         draw_rectangle(*self.get_bb())
 
+
     def get_bb(self):  # 히트 박스
         return self.x - 25, self.y - 50, self.x + 20, self.y + 40
 
     def handle_collision(self, group, other):
-        if group == 'player1:hurdle':
+        if group == 'runner:hurdle':
             self.state_machine.handle_event(('COLLISION', 0))
-        if group == 'player1:endpoint':
+        if group == 'runner:endpoint':
             # game_framework.change_mode(title_mode)
             pass
 

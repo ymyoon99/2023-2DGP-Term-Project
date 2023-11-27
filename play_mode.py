@@ -4,6 +4,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+import server
 import title_mode
 from background import Background
 from runner import Runner
@@ -21,34 +22,31 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            player1.handle_event(event)
+            server.runner.handle_event(event)
 
 def init():
-    global background
-    global player1
-    global endpoint
 
     running = True
 
-    background = Background()
-    game_world.add_object(background, 0)
+    server.background = Background()
+    game_world.add_object(server.background, 0)
 
-    player1 = Runner()
-    game_world.add_object(player1, 1)
+    server.runner = Runner()
+    game_world.add_object(server.runner, 1)
 
-    hurdles = [Hurdle() for _ in range(2)]
-    game_world.add_objects(hurdles, 1)
+    server.hurdle = [Hurdle() for _ in range(2)]
+    game_world.add_objects(server.hurdle, 1)
 
-    endpoint = Endpoint()
-    game_world.add_object(endpoint, 1)
+    server.endpoint = Endpoint()
+    game_world.add_object(server.endpoint, 1)
 
     # 충돌 상황 등록
-    game_world.add_collision_pair('player1:hurdle', player1, None)
-    for hurdle in hurdles:
-        game_world.add_collision_pair('player1:hurdle', None, hurdle)
+    # game_world.add_collision_pair('runner:hurdle', server.runner, None)
+    # for hurdle in server.hurdle:
+    #     game_world.add_collision_pair('runner:hurdle', None, server.hurdle)
 
-    game_world.add_collision_pair('player1:endpoint', player1, None)
-    game_world.add_collision_pair('player1:endpoint', None, endpoint)
+    game_world.add_collision_pair('runner:endpoint', server.runner, None)
+    game_world.add_collision_pair('runner:endpoint', None, server.endpoint)
 
 
 
