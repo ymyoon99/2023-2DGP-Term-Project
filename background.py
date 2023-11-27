@@ -5,7 +5,8 @@ import server
 
 class Background:
     def __init__(self):
-        self.image = load_image('./background/back_ground (1).png')
+        # self.image = load_image('./background/back_ground (1).png')
+        self.image = load_image('./background/200M.png')
         self.cw = get_canvas_width()
         self.ch = get_canvas_height()
 
