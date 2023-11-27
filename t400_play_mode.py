@@ -8,9 +8,9 @@ import server
 from server_const import *
 
 from t400_background import T400_Background
-from runner import Runner
-from hurdle import Hurdle
-from endpoint import Endpoint
+from t400_runner import Runner
+from t400_hurdle import Hurdle
+from t400_endpoint import Endpoint
 
 # Linked_Mode
 import title_mode
@@ -24,31 +24,31 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         else:
-            server.runner.handle_event(event)
+            server.t400_runner.handle_event(event)
 
 def init():
 
     running = True
 
-    server.background = T400_Background()
+    server.t400_background = T400_Background()
     game_world.add_object(server.t400_background, 0)
 
-    server.runner = Runner()
-    game_world.add_object(server.runner, 1)
+    server.t400_runner = Runner()
+    game_world.add_object(server.t400_runner, 1)
 
-    server.hurdle = [Hurdle() for _ in range(10)]
-    game_world.add_objects(server.hurdle, 1)
+    server.t400_hurdle = [Hurdle() for _ in range(10)]
+    game_world.add_objects(server.t400_hurdle, 1)
 
-    server.endpoint = Endpoint()
-    game_world.add_object(server.endpoint, 1)
+    server.t400_endpoint = Endpoint()
+    game_world.add_object(server.t400_endpoint, 1)
 
     # 충돌 상황 등록
-    game_world.add_collision_pair('runner:hurdle', server.runner, None)
-    for hurdle in server.hurdle:
+    game_world.add_collision_pair('runner:hurdle', server.t400_runner, None)
+    for hurdle in server.t400_hurdle:
         game_world.add_collision_pair('runner:hurdle', None, hurdle)
 
-    game_world.add_collision_pair('runner:endpoint', server.runner, None)
-    game_world.add_collision_pair('runner:endpoint', None, server.endpoint)
+    game_world.add_collision_pair('runner:endpoint', server.t400_runner, None)
+    game_world.add_collision_pair('runner:endpoint', None, server.t400_endpoint)
 
 
 

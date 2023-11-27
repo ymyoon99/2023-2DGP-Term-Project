@@ -5,6 +5,7 @@ import game_framework
 import game_world
 import server
 
+HURDLE_CLAMP = 300
 
 class Hurdle:
     image = None
@@ -13,12 +14,8 @@ class Hurdle:
         if Hurdle.image == None:
             self.image = load_image('./resource/hurdle.png')
 
-        # 허들의 최소 간격
-        min_distance = 300
-        hurdle_clamp = 300
-
         # x 좌표 설정
-        self.x = x if x else random.randint(min_distance, server.t200_background.image.w - hurdle_clamp)
+        self.x = x if x else random.randint(HURDLE_CLAMP, server.t200_background.w - HURDLE_CLAMP)
         self.y = y if y else 210-20
 
     def update(self):

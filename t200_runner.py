@@ -295,10 +295,12 @@ class Runner:
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
         self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
         self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
-        draw_rectangle(sx - 25, sy - 50, sx + 20, sy + 40)
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스
-        return self.x - 25, self.y - 50, self.x + 20, self.y + 40
+        sx = self.x - server.t200_background.window_left
+        sy = self.y - server.t200_background.window_bottom
+        return sx - 25, sy - 50, sx + 20, sy + 40
 
     def handle_collision(self, group, other):
         if group == 'runner:hurdle':
