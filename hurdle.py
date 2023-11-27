@@ -18,15 +18,15 @@ class Hurdle:
         hurdle_clamp = 300
 
         # x 좌표 설정
-        self.x = x if x else random.randint(min_distance, server.background.image.w - hurdle_clamp)
+        self.x = x if x else random.randint(min_distance, server.t200_background.image.w - hurdle_clamp)
         self.y = y if y else 210-20
 
     def update(self):
         pass
 
     def draw(self):
-        sx = self.x - server.background.window_left
-        sy = self.y - server.background.window_bottom
+        sx = self.x - server.t200_background.window_left
+        sy = self.y - server.t200_background.window_bottom
         self.image.draw(sx, sy)
         draw_rectangle(*self.get_bb())
 
@@ -34,8 +34,8 @@ class Hurdle:
         pass
 
     def get_bb(self):
-        sx = self.x - server.background.window_left
-        sy = self.y - server.background.window_bottom
+        sx = self.x - server.t200_background.window_left
+        sy = self.y - server.t200_background.window_bottom
         return sx - 23, sy - 30, sx + 23, sy + 30
 
     def handle_collision(self, group, other):

@@ -6,7 +6,7 @@ import game_framework
 import game_world
 import server
 import title_mode
-from background import Background
+from t200_background import T200_Background
 from runner import Runner
 from hurdle import Hurdle
 from endpoint import Endpoint
@@ -28,8 +28,8 @@ def init():
 
     running = True
 
-    server.background = Background()
-    game_world.add_object(server.background, 0)
+    server.t200_background = T200_Background()
+    game_world.add_object(server.t200_background, 0)
 
     server.runner = Runner()
     game_world.add_object(server.runner, 1)

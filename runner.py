@@ -6,7 +6,7 @@ from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYU
 
 import game_world
 import game_framework
-import play_mode
+import t200_play_mode
 import server
 import title_mode
 
@@ -280,15 +280,15 @@ class Runner:
 
     def update(self):
         self.state_machine.update()
-        self.x = clamp(50.0, self.x, server.background.w - 50.0)
-        self.y = clamp(50.0, self.y, server.background.h - 50.0)
+        self.x = clamp(50.0, self.x, server.t200_background.w - 50.0)
+        self.y = clamp(50.0, self.y, server.t200_background.h - 50.0)
 
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
-        sx, sy = self.x - server.background.window_left, self.y - server.background.window_bottom
+        sx, sy = self.x - server.t200_background.window_left, self.y - server.t200_background.window_bottom
         self.image.clip_draw(int(self.frame) * 556, self.action * 504, 556, 504, sx, sy, 100, 100)
 
         # NUM_DRAW

@@ -1,10 +1,16 @@
+# External_Library
 from pico2d import open_canvas, delay, close_canvas
+
+# Internal_Library
 import game_framework
-import logo_mode
+from server_const import *
 
-import play_mode as start_mode
+# Choice_Mode
+import logo_mode as release
+import t200_play_mode as start_mode
 
-open_canvas(1280, 720)
-game_framework.run(start_mode)
+
+open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT)
+game_framework.run(release)
 close_canvas()
 

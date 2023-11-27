@@ -3,9 +3,9 @@ from pico2d import *
 import server
 
 
-class Background:
+class T400_Background:
     def __init__(self):
-        self.image = load_image('./background/200M.png')
+        self.image = load_image('./background/400M.png')
 
         self.cw = get_canvas_width() # 캔버스의 너비
         self.ch = get_canvas_height() # 캔버스의 높이

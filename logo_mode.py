@@ -1,5 +1,11 @@
-import game_framework
+# External_Library
 from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time
+
+# Internal_Library
+import game_framework
+from server_const import *
+
+# Linked_Mode
 import title_mode
 
 
@@ -21,7 +27,7 @@ def update():
 
 def draw():
     clear_canvas()
-    image.draw(640, 360)
+    image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()
 
 def handle_events():
