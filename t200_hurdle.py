@@ -4,8 +4,8 @@ import math
 import game_framework
 import game_world
 import server
+from server_const import *
 
-HURDLE_CLAMP = 300
 
 class Hurdle:
     image = None
@@ -16,7 +16,7 @@ class Hurdle:
 
         # x 좌표 설정
         self.x = x if x else random.randint(HURDLE_CLAMP, server.t200_background.w - HURDLE_CLAMP)
-        self.y = y if y else 210-20
+        self.y = y if y else RUNNER_HURDLE_Y
 
     def update(self):
         pass
