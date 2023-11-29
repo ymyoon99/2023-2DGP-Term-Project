@@ -8,6 +8,7 @@ import game_world
 import game_framework
 import t200_play_mode
 import server
+from server_const import *
 import title_mode
 
 
@@ -55,6 +56,7 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
+<<<<<<< HEAD
 # PLAYER MOVEMENT SETTINGS
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -73,6 +75,8 @@ PLAYER_START_LINE = 100
 STAMINA_MAX = 100000000000
 
 
+=======
+>>>>>>> 72815de90f4fa502183efd0ab5d21d2cd19c0494
 class Idle:
 
     @staticmethod
