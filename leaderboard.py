@@ -14,17 +14,21 @@ def init():
 
     image = load_image('./resource/leaderboard.jpg')
 
+
 def finish():
     pass
 
+
 def update():
     pass
+
 
 def draw():
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()
     pass
+
 
 def handle_events(leaderboard=None):
     events = get_events()

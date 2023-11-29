@@ -1,16 +1,15 @@
 import random
 from pico2d import *
 
-
 import game_framework
 import game_world
 import server
 from server_const import *
 
-from t400_background import T400_Background
+from background import T400_Background
 from t400_runner import Runner
-from t400_hurdle import Hurdle
-from t400_endpoint import Endpoint
+from hurdle import T400_Hurdle
+from endpoint import T400_Endpoint
 
 # Linked_Mode
 import title_mode
@@ -26,8 +25,8 @@ def handle_events():
         else:
             server.t400_runner.handle_event(event)
 
-def init():
 
+def init():
     running = True
 
     server.t400_background = T400_Background()
@@ -36,10 +35,10 @@ def init():
     server.t400_runner = Runner()
     game_world.add_object(server.t400_runner, 1)
 
-    server.t400_hurdle = [Hurdle() for _ in range(10)]
+    server.t400_hurdle = [T400_Hurdle() for _ in range(10)]
     game_world.add_objects(server.t400_hurdle, 1)
 
-    server.t400_endpoint = Endpoint()
+    server.t400_endpoint = T400_Endpoint()
     game_world.add_object(server.t400_endpoint, 1)
 
     # 충돌 상황 등록
@@ -51,7 +50,6 @@ def init():
     game_world.add_collision_pair('runner:endpoint', None, server.t400_endpoint)
 
 
-
 def finish():
     game_world.clear()
     pass
@@ -59,16 +57,18 @@ def finish():
 
 def update():
     game_world.update()
-    game_world.handle_collisions() # 충돌을 업데이트하는 함수
+    game_world.handle_collisions()  # 충돌을 업데이트하는 함수
+
 
 def draw():
     clear_canvas()
     game_world.render()
     update_canvas()
 
+
 def pause():
     pass
 
+
 def resume():
     pass
-

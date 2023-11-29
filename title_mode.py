@@ -16,17 +16,21 @@ def init():
 
     image = load_image('./resource/title.jpg')
 
+
 def finish():
     pass
 
+
 def update():
     pass
+
 
 def draw():
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()
     pass
+
 
 def handle_events(title_mode=None):
     events = get_events()
@@ -39,5 +43,3 @@ def handle_events(title_mode=None):
             game_framework.change_mode(tracklist)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
             game_framework.change_mode(leaderboard)
-
-

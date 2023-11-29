@@ -55,7 +55,6 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
-
 # PLAYER MOVEMENT SETTINGS
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -137,7 +136,6 @@ class Walk:
             runner.action = 0
             runner.dir = -1
 
-
     @staticmethod
     def exit(runner, e):
         pass
@@ -181,7 +179,8 @@ class Jump:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
 
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
@@ -207,14 +206,14 @@ class Hurt:
     @staticmethod
     def do(runner):
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:
             if get_time() - runner.wait_time > 2:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
-
 
     # @staticmethod
     # def draw(runner):
@@ -239,10 +238,9 @@ class StateMachine:
     def update(self):
         self.cur_state.do(self.runner)
 
-
     def handle_event(self, e):
 
-        if self.cur_state == Jump and a_key_down(e): # 2단 점프 방지
+        if self.cur_state == Jump and a_key_down(e):  # 2단 점프 방지
             return False
 
         if e[0] == 'COLLISION':
@@ -283,7 +281,6 @@ class Runner:
         self.x = clamp(50.0, self.x, server.t400_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t400_background.h - 50.0)
 
-
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
@@ -308,4 +305,3 @@ class Runner:
         if group == 'runner:endpoint':
             # game_framework.change_mode(title_mode)
             pass
-

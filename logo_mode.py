@@ -16,8 +16,10 @@ def init():
     image = load_image('./resource/loading.png')
     logo_start_time = get_time()
 
+
 def finish():
     pass
+
 
 def update():
     global running
@@ -25,10 +27,12 @@ def update():
     if get_time() - logo_start_time >= 1.0:
         game_framework.change_mode(title_mode)
 
+
 def draw():
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()
+
 
 def handle_events():
     events = get_events()

@@ -12,23 +12,26 @@ import t200_play_mode
 import t400_play_mode
 
 
-
 def init():
     global image
 
     image = load_image('./resource/tracklist.jpg')
 
+
 def finish():
     pass
 
+
 def update():
     pass
+
 
 def draw():
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()
     pass
+
 
 def handle_events(tracklist=None):
     events = get_events()
@@ -41,4 +44,3 @@ def handle_events(tracklist=None):
             game_framework.change_mode(t200_play_mode)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
             game_framework.change_mode(t400_play_mode)
-

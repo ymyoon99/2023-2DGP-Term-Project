@@ -49,7 +49,7 @@ def run(start_mode):
     global current_time
     frame_time = 0.0
     current_time = time.time()
-    while running: # 구동
+    while running:  # 구동
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()
@@ -62,6 +62,7 @@ def run(start_mode):
     while (len(stack) > 0):
         stack[-1].finish()
         stack.pop()
+
 
 def get_frame_time():
     return frame_time

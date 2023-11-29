@@ -6,10 +6,10 @@ import game_framework
 import game_world
 import server
 import title_mode
-from t200_background import T200_Background
+from background import T200_Background
 from t200_runner import Runner
-from t200_hurdle import Hurdle
-from t200_endpoint import Endpoint
+from hurdle import T200_Hurdle
+from endpoint import T200_Endpoint
 
 
 # boy = None
@@ -24,8 +24,8 @@ def handle_events():
         else:
             server.t200_runner.handle_event(event)
 
-def init():
 
+def init():
     running = True
 
     server.t200_background = T200_Background()
@@ -34,10 +34,10 @@ def init():
     server.t200_runner = Runner()
     game_world.add_object(server.t200_runner, 1)
 
-    server.t200_hurdle = [Hurdle() for _ in range(10)]
+    server.t200_hurdle = [T200_Hurdle() for _ in range(10)]
     game_world.add_objects(server.t200_hurdle, 1)
 
-    server.t200_endpoint = Endpoint()
+    server.t200_endpoint = T200_Endpoint()
     game_world.add_object(server.t200_endpoint, 1)
 
     # 충돌 상황 등록
@@ -49,7 +49,6 @@ def init():
     game_world.add_collision_pair('runner:endpoint', None, server.t200_endpoint)
 
 
-
 def finish():
     game_world.clear()
     pass
@@ -57,16 +56,18 @@ def finish():
 
 def update():
     game_world.update()
-    game_world.handle_collisions() # 충돌을 업데이트하는 함수
+    game_world.handle_collisions()  # 충돌을 업데이트하는 함수
+
 
 def draw():
     clear_canvas()
     game_world.render()
     update_canvas()
 
+
 def pause():
     pass
 
+
 def resume():
     pass
-

@@ -55,7 +55,6 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
-
 # PLAYER MOVEMENT SETTINGS
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -137,7 +136,6 @@ class Walk:
             runner.action = 0
             runner.dir = -1
 
-
     @staticmethod
     def exit(runner, e):
         pass
@@ -161,7 +159,7 @@ class Jump:
         runner.stamina -= 20
         if a_key_down(e):  # 추가된 조건
             runner.action = 3
-        runner.wait_time = get_time()
+        # runner.wait_time = get_time()
         runner.frame = 0
         runner.animation_done = False
 
@@ -171,14 +169,21 @@ class Jump:
 
     @staticmethod
     def do(runner):
-        if get_time() - runner.wait_time < 1:
-            runner.y += RUN_SPEED_PPS * game_framework.get_frame_time()
-            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-        elif get_time() - runner.wait_time >= 1:
-            runner.y -= RUN_SPEED_PPS * game_framework.get_frame_time()
-            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-            if runner.y <= PLAYER_1_GROUND:
-                runner.state_machine.handle_event(('TIME_OUT', 0))
+        if runner.isJump > 0:
+
+            if runner.velocity > 0:
+                F = (0.5 * runner.mass * (runner.velocity * runner.velocity))
+            else:
+                F = -(0.5 * runner.mass * (runner.velocity * runner.velocity))
+
+            runner.y += round(F)
+            runner.velocity -= 1
+            runner.x += 1
+
+            if runner.y < PLAYER_1_GROUND:
+                runner.y = PLAYER_1_GROUND
+                runner.isJump = 0
+                runner.velocity = 5
 
         if not runner.animation_done:
             runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
@@ -215,7 +220,6 @@ class Hurt:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
 
-
     # @staticmethod
     # def draw(runner):
     #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
@@ -239,10 +243,9 @@ class StateMachine:
     def update(self):
         self.cur_state.do(self.runner)
 
-
     def handle_event(self, e):
 
-        if self.cur_state == Jump and a_key_down(e): # 2단 점프 방지
+        if self.cur_state == Jump and a_key_down(e):  # 2단 점프 방지
             return False
 
         if e[0] == 'COLLISION':
@@ -277,12 +280,17 @@ class Runner:
         self.font_stamina = load_font('./resource/ENCR10B.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.isJump = 0
+        self.velocity = 5
+        self.mass = 2
+
+    def jump(self, o):
+        self.isJump = 0
 
     def update(self):
         self.state_machine.update()
         self.x = clamp(50.0, self.x, server.t200_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t200_background.h - 50.0)
-
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -308,4 +316,3 @@ class Runner:
         if group == 'runner:endpoint':
             # game_framework.change_mode(title_mode)
             pass
-

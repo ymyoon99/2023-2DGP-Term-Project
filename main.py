@@ -9,8 +9,6 @@ from server_const import *
 import logo_mode as release
 import t200_play_mode as start_mode
 
-
 open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT)
 game_framework.run(release)
 close_canvas()
-
