@@ -16,7 +16,7 @@ class T200_Hurdle:
 
         # x 좌표 설정
         self.x = x if x else random.randint(HURDLE_CLAMP, server.t200_background.w - HURDLE_CLAMP)
-        self.y = y if y else 210 - 20
+        self.y = y if y else RUNNER_HURDLE_Y
 
     def update(self):
         pass
@@ -33,7 +33,7 @@ class T200_Hurdle:
     def get_bb(self):
         sx = self.x - server.t200_background.window_left
         sy = self.y - server.t200_background.window_bottom
-        return sx - 23, sy - 30, sx + 23, sy + 30
+        return sx - 18, sy - 25, sx + 18, sy + 25
 
     def handle_collision(self, group, other):
         if group == 'runner:hurdle':
@@ -46,7 +46,7 @@ class T400_Hurdle:
         self.image = load_image('./resource/hurdle.png')
 
         self.x = random.randint(HURDLE_CLAMP, server.t400_background.w - HURDLE_CLAMP)
-        self.y = 210 - 20
+        self.y = RUNNER_HURDLE_Y
 
     def update(self):
         pass
@@ -63,7 +63,7 @@ class T400_Hurdle:
     def get_bb(self):
         sx = self.x - server.t400_background.window_left
         sy = self.y - server.t400_background.window_bottom
-        return sx - 23, sy - 30, sx + 23, sy + 30
+        return sx - 18, sy - 25, sx + 18, sy + 25
 
     def handle_collision(self, group, other):
         if group == 'runner:hurdle':

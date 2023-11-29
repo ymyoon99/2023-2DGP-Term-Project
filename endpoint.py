@@ -3,12 +3,13 @@ from pico2d import *
 import game_framework
 
 import server
+from server_const import *
 
 
 class T200_Endpoint:
 
     def __init__(self):
-        self.x, self.y = server.t200_background.w - 160, 520
+        self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, 520
         # self.image = load_image('./resource/end_flag.png')
 
     def update(self):

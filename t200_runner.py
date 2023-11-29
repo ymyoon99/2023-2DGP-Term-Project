@@ -148,7 +148,7 @@ class Jump:
     def do(runner):
         runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time()
         runner.gravity -= 0.1
-        runner.x += 0.7
+        runner.x += 1.2
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
@@ -159,10 +159,6 @@ class Jump:
             runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
-
-    # @staticmethod
-    # def draw(runner):
-    #     runner.image.clip_draw(int(runner.frame) * 556, runner.action * 504, 556, 504, runner.x, runner.y, 100, 100)
 
 
 class Hurt:
