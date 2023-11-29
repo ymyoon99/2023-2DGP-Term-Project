@@ -5,6 +5,8 @@ import game_framework
 
 import game_world
 import server
+from server_const import *
+
 import title_mode
 from background import T200_Background
 from t200_runner import Runner

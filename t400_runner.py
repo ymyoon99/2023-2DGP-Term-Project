@@ -56,27 +56,6 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
-<<<<<<< HEAD
-# PLAYER MOVEMENT SETTINGS
-PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 10.0  # Km / Hour
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-
-TIME_PER_ACTION = 0.5
-ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION_8 = 8
-FRAMES_PER_ACTION_10 = 10
-
-PLAYER_1_GROUND = 210
-PLAYER_START_LINE = 100
-
-STAMINA_MAX = 100000000000
-
-=======
->>>>>>> 72815de90f4fa502183efd0ab5d21d2cd19c0494
-
 class Idle:
 
     @staticmethod
@@ -183,8 +162,7 @@ class Jump:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
 
         if not runner.animation_done:
-            runner.frame = (
-                                       runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
@@ -210,8 +188,7 @@ class Hurt:
     @staticmethod
     def do(runner):
         if not runner.animation_done:
-            runner.frame = (
-                                       runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:

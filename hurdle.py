@@ -4,8 +4,7 @@ import math
 import game_framework
 import game_world
 import server
-
-HURDLE_CLAMP = 300
+from server_const import *
 
 
 class T200_Hurdle:
