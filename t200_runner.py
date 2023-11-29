@@ -12,6 +12,7 @@ from server_const import *
 import title_mode
 
 
+
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
@@ -245,6 +246,7 @@ class Runner:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.gravity = 5
+        self.start_time = None
 
     def update(self):
         self.state_machine.update()
@@ -255,13 +257,20 @@ class Runner:
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
+
         sx, sy = self.x - server.t200_background.window_left, self.y - server.t200_background.window_bottom
         self.image.clip_draw(int(self.frame) * 556, self.action * 504, 556, 504, sx, sy, 100, 100)
+
+        # TIME_CHECKER
+        if self.start_time is None:
+            self.start_time = get_time()
+        running_time = get_time() - self.start_time
+
+        self.font_time.draw(10, 630, f'Running Time: {running_time:.03f}', (0, 0, 0))
 
         # NUM_DRAW
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
         self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
-        self.font_time.draw(10, 630, f'Running Time: {get_time():.03f}', (0, 0, 0))
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스

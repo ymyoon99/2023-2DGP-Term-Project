@@ -14,8 +14,6 @@ from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
 
 
-# boy = None
-
 def handle_events():
     events = get_events()
     for event in events:
