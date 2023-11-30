@@ -148,7 +148,7 @@ class Jump:
     @staticmethod
     def do(runner):
         runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time()
-        runner.gravity -= 0.1
+        runner.gravity -= 0.15
         runner.x += 1.2
 
         if runner.y < PLAYER_1_GROUND:
@@ -276,7 +276,7 @@ class Runner:
     def get_bb(self):  # 히트 박스
         sx = self.x - server.t200_background.window_left
         sy = self.y - server.t200_background.window_bottom
-        return sx - 25, sy - 50, sx + 20, sy + 40
+        return sx - 20, sy - 47, sx + 15, sy + 35
 
     def handle_collision(self, group, other):
         if group == 'runner:hurdle':
