@@ -44,7 +44,6 @@ def remove_collision_object(o):
             pairs[0].remove(o)
         if o in pairs[1]:  # b 그룹
             pairs[1].remove(o)
-    pass
 
 
 def remove_object(o):
@@ -73,11 +72,18 @@ def add_collision_pair(group, a, b):
 
 
 def handle_collisions():
-    # 등롤된 모든 충돌 상황에 대해서 충돌 검사 및 충돌 처리 수정.
-    for group, pairs in collision_pairs.items():  # key 'boy:ball', value [ []. [] ]
+    collided_pairs = []
+    for group, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
                 if collide(a, b):
-                    a.handle_collision(group, b)  # b와 충돌함을 알려줌
-                    b.handle_collision(group, a)
-    return None
+                    collided_pairs.append((group, a, b))
+    for group, a, b in collided_pairs:
+        a.handle_collision(group, b)
+        b.handle_collision(group, a)
+
+
+def all_objects():
+    for layer in objects:
+        for o in layer:
+            yield o

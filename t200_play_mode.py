@@ -51,6 +51,7 @@ def init():
 
 def finish():
     game_world.clear()
+    del server.t200_hurdle[:]
     pass
 
 

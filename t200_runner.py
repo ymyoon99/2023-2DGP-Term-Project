@@ -149,7 +149,7 @@ class Jump:
     def do(runner):
         runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time()
         runner.gravity -= 0.15
-        runner.x += 1.2
+        runner.x += 1.5
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
@@ -168,7 +168,6 @@ class Hurt:
     def enter(runner, e):
         runner.stamina += 20
         runner.action = 7
-        runner.wait_time = get_time()
         runner.animation_done = False
         runner.frame = 0
 
@@ -178,12 +177,16 @@ class Hurt:
 
     @staticmethod
     def do(runner):
+        if runner.start_time is None:
+            runner.start_time = get_time()
+        hurt_spend_time = get_time() - runner.start_time
+
         if not runner.animation_done:
             runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:
-            if get_time() - runner.wait_time > 2:
+            if hurt_spend_time > 2:
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
 
