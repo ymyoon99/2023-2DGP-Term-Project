@@ -94,8 +94,6 @@ class Run:
 
     @staticmethod
     def exit(runner, e):
-        # if space_down(e):
-        #     player.fire_ball()
         pass
 
     @staticmethod
@@ -104,9 +102,9 @@ class Run:
         if runner.stamina <= 0:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
-        else:
-            runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
+
+        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+        runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
 
 class Walk:
@@ -147,8 +145,12 @@ class Jump:
 
     @staticmethod
     def do(runner):
-        runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time()
-        runner.gravity -= 0.15
+        if runner.stamina <= 0:
+            runner.stamina = 0
+            runner.state_machine.handle_event(('COLLISION', 0))
+
+        runner.y += runner.gravity * JUMP_SPEED_PPS * 0.2/60
+        runner.gravity -= 0.13
         runner.x += 1.5
 
         if runner.y < PLAYER_1_GROUND:
@@ -170,6 +172,7 @@ class Hurt:
         runner.action = 7
         runner.animation_done = False
         runner.frame = 0
+        runner.y = PLAYER_1_GROUND
 
     @staticmethod
     def exit(runner, e):
@@ -177,9 +180,9 @@ class Hurt:
 
     @staticmethod
     def do(runner):
-        if runner.start_time is None:
-            runner.start_time = get_time()
-        hurt_spend_time = get_time() - runner.start_time
+        if runner.hurt_check_time is None:
+            runner.hurt_check_time = get_time()
+        hurt_spend_time = get_time() - runner.hurt_check_time
 
         if not runner.animation_done:
             runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
@@ -187,6 +190,7 @@ class Hurt:
                 runner.animation_done = True
         else:
             if hurt_spend_time > 2:
+                runner.start_time = None
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
 
@@ -199,7 +203,7 @@ class StateMachine:
             Idle: {left_down: Walk, right_down: Walk, up_down: Run, a_key_down: Jump},
             Run: {up_up: Idle, left_down: Walk, right_down: Walk, a_key_down: Jump},
             Walk: {left_up: Idle, right_up: Idle, up_down: Run, a_key_down: Jump},
-            Jump: {isGround: Idle},
+            Jump: {isGround: Idle, a_key_up: Jump},
             Hurt: {time_out: Idle}
         }
 
@@ -250,6 +254,7 @@ class Runner:
         self.state_machine.start()
         self.gravity = 5
         self.start_time = None
+        self.hurt_check_time = None
 
     def update(self):
         self.state_machine.update()

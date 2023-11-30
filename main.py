@@ -1,4 +1,5 @@
 # External_Library
+import pyglet
 from pico2d import open_canvas, delay, close_canvas
 
 # Internal_Library
@@ -9,6 +10,7 @@ from server_const import *
 import logo_mode as release
 import t200_play_mode as start_mode
 
-open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT)
-game_framework.run(start_mode)
+
+open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, sync=True)
+game_framework.run(release)
 close_canvas()
