@@ -13,7 +13,7 @@ class StUi:
         self.images = [load_image(f'./resource/percent/percent_{i}.png') for i in range(0, 110, 10)]
 
         # x 좌표 설정
-        self.x = x if x else 300
+        self.x = x if x else 250
         self.y = y if y else 650
 
     def update(self):

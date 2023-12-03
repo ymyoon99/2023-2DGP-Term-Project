@@ -99,7 +99,7 @@ class Run:
 
     @staticmethod
     def do(runner):
-        runner.stamina -= game_framework.get_frame_time() * 20
+        runner.stamina -= 1/60
         if runner.stamina <= 0:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
