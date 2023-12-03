@@ -68,4 +68,5 @@ class T400_Hurdle:
 
     def handle_collision(self, group, other):
         if group == 'runner:hurdle':
-            game_world.remove_object(self)
+            if self in game_world.objects[1]:  # 해당 객체가 게임 월드에 있는지 확인
+                game_world.remove_object(self)

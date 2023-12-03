@@ -12,6 +12,7 @@ from background import T200_Background
 from t200_runner import Runner
 from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
+from ai import Ai
 
 
 def handle_events():
@@ -40,6 +41,9 @@ def init():
     server.t200_endpoint = T200_Endpoint()
     game_world.add_object(server.t200_endpoint, 1)
 
+    server.ai = Ai()
+    game_world.add_object(server.ai, 1)
+
     # 충돌 상황 등록
     game_world.add_collision_pair('runner:hurdle', server.t200_runner, None)
     for hurdle in server.t200_hurdle:
@@ -48,9 +52,13 @@ def init():
     game_world.add_collision_pair('runner:endpoint', server.t200_runner, None)
     game_world.add_collision_pair('runner:endpoint', None, server.t200_endpoint)
 
+    game_world.add_collision_pair('ai:endpoint', server.ai, None)
+    game_world.add_collision_pair('ai:endpoint', None, server.t200_endpoint)
+
 
 def finish():
     game_world.clear()
+    game_world.clear_collision_pairs()
     del server.t200_hurdle[:]
     pass
 

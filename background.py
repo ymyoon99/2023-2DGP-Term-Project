@@ -13,6 +13,9 @@ class T200_Background:
         self.w = self.image.w  # 실제 이미지의 넓이
         self.h = self.image.h  # 실제 이미지의 높이
 
+        self.window_left = 0
+        self.window_bottom = 0
+
     def draw(self):
         self.image.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
 
@@ -33,6 +36,9 @@ class T400_Background:
 
         self.w = self.image.w  # 실제 이미지의 넓이
         self.h = self.image.h  # 실제 이미지의 높이
+
+        self.window_left = 0
+        self.window_bottom = 0
 
     def draw(self):
         self.image.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)

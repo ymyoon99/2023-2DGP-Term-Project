@@ -8,6 +8,8 @@ from server_const import *
 
 # Linked_Mode
 import title_mode
+import ready_mode_t200
+import ready_mode_t400
 import t200_play_mode
 import t400_play_mode
 
@@ -15,7 +17,7 @@ import t400_play_mode
 def init():
     global image
 
-    image = load_image('./resource/tracklist.jpg')
+    image = load_image('./background/tracklist.jpg')
 
 
 def finish():
@@ -41,6 +43,6 @@ def handle_events(tracklist=None):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_1):
-            game_framework.change_mode(t200_play_mode)
+            game_framework.change_mode(ready_mode_t200)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
-            game_framework.change_mode(t400_play_mode)
+            game_framework.change_mode(ready_mode_t400)

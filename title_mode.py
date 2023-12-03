@@ -14,7 +14,7 @@ import leaderboard
 def init():
     global image
 
-    image = load_image('./resource/title.jpg')
+    image = load_image('./background/title.jpg')
 
 
 def finish():

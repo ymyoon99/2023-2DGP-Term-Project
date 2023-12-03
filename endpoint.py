@@ -50,7 +50,7 @@ class T400_Endpoint:
     def get_bb(self):
         sx = self.x - server.t400_background.window_left
         sy = self.y - server.t400_background.window_bottom
-        return sx - 16, sy - 1000, sx + 23, sy + 30
+        return sx - 16, sy - 500, sx + 23, sy + 30
 
     def handle_collision(self, group, other):
         pass

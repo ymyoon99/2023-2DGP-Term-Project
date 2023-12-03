@@ -52,6 +52,8 @@ def init():
 
 def finish():
     game_world.clear()
+    game_world.clear_collision_pairs()
+    del server.t200_hurdle[:]
     pass
 
 

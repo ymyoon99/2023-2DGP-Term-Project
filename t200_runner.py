@@ -8,9 +8,10 @@ import game_world
 import game_framework
 import t200_play_mode
 import server
+import win_mode
+from background import T200_Background
 from server_const import *
 import title_mode
-
 
 
 def right_down(e):
@@ -173,6 +174,8 @@ class Hurt:
         runner.animation_done = False
         runner.frame = 0
         runner.y = PLAYER_1_GROUND
+        runner.hurt_start_time = get_time()
+
 
     @staticmethod
     def exit(runner, e):
@@ -180,9 +183,8 @@ class Hurt:
 
     @staticmethod
     def do(runner):
-        if runner.hurt_check_time is None:
-            runner.hurt_check_time = get_time()
-        hurt_spend_time = get_time() - runner.hurt_check_time
+        hurt_check_time = get_time()
+        hurt_spend_time = hurt_check_time - runner.hurt_start_time
 
         if not runner.animation_done:
             runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
@@ -190,7 +192,6 @@ class Hurt:
                 runner.animation_done = True
         else:
             if hurt_spend_time > 2:
-                runner.start_time = None
                 runner.state_machine.handle_event(('TIME_OUT', 0))
                 runner.y = PLAYER_1_GROUND  # Y축 보정
 
@@ -254,7 +255,8 @@ class Runner:
         self.state_machine.start()
         self.gravity = 5
         self.start_time = None
-        self.hurt_check_time = None
+        self.hurt_start_time = None
+
 
     def update(self):
         self.state_machine.update()
@@ -290,4 +292,13 @@ class Runner:
         if group == 'runner:hurdle':
             self.state_machine.handle_event(('COLLISION', 0))
         if group == 'runner:endpoint':
-            pass
+            self.record_lap_time()
+            print(server.lap_times[0])
+            game_framework.change_mode(win_mode)
+
+    def record_lap_time(self):
+        end_time = get_time()
+        if self.start_time is not None:
+            lap_time = end_time - self.start_time
+            server.lap_times.append(lap_time)
+            self.start_time = end_time

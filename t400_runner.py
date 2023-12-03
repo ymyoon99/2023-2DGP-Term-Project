@@ -284,5 +284,4 @@ class Runner:
         if group == 'runner:hurdle':
             self.state_machine.handle_event(('COLLISION', 0))
         if group == 'runner:endpoint':
-            # game_framework.change_mode(title_mode)
             pass

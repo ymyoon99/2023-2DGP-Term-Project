@@ -1,5 +1,6 @@
 # global variable
 
+ai = None
 
 # track_200_mode
 t200_runner = None
@@ -12,3 +13,5 @@ t400_runner = None
 t400_background = None
 t400_endpoint = None
 t400_hurdle = None
+
+lap_times = []

@@ -87,3 +87,5 @@ def all_objects():
     for layer in objects:
         for o in layer:
             yield o
+def clear_collision_pairs():
+    collision_pairs.clear()
