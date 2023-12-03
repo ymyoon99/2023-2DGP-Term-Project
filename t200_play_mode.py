@@ -13,6 +13,7 @@ from t200_runner import Runner
 from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
 from ai import Ai
+from ui import StUi
 
 
 def handle_events():
@@ -43,6 +44,9 @@ def init():
 
     server.ai = Ai()
     game_world.add_object(server.ai, 1)
+
+    server.ui = StUi()
+    game_world.add_object(server.ui, 1)
 
     # 충돌 상황 등록
     game_world.add_collision_pair('runner:hurdle', server.t200_runner, None)

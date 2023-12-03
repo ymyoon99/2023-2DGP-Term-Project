@@ -1,6 +1,7 @@
 # global variable
 
 ai = None
+ui = None
 
 # track_200_mode
 t200_runner = None

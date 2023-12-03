@@ -89,7 +89,7 @@ class Run:
 
     @staticmethod
     def enter(runner, e):
-        runner.stamina -= 5
+        runner.stamina -= 1
         if up_down(e):
             runner.action = 2
 
@@ -203,8 +203,8 @@ class StateMachine:
         self.transitions = {
             Idle: {left_down: Walk, right_down: Walk, up_down: Run, a_key_down: Jump},
             Run: {up_up: Idle, left_down: Walk, right_down: Walk, a_key_down: Jump},
-            Walk: {left_up: Idle, right_up: Idle, up_down: Run, a_key_down: Jump},
-            Jump: {isGround: Idle, a_key_up: Jump},
+            Walk: {left_down: Walk, left_up: Idle, right_down: Walk, right_up: Idle, up_down: Run, a_key_down: Jump},
+            Jump: {isGround: Idle},
             Hurt: {time_out: Idle}
         }
 
@@ -276,11 +276,11 @@ class Runner:
             self.start_time = get_time()
         running_time = get_time() - self.start_time
 
-        self.font_time.draw(10, 630, f'Running Time: {running_time:.03f}', (0, 0, 0))
+        self.font_time.draw(10, 600, f'Running Time: {running_time:.03f}', (0, 0, 0))
 
         # NUM_DRAW
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
-        self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
+        # self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스
