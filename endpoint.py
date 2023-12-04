@@ -1,12 +1,10 @@
 from pico2d import *
 
-import game_framework
-
 import server
 from server_const import *
 
 
-class T200_Endpoint:
+class T200Endpoint:
 
     def __init__(self):
         self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, 520
@@ -31,7 +29,7 @@ class T200_Endpoint:
         pass
 
 
-class T400_Endpoint:
+class T400Endpoint:
 
     def __init__(self):
         self.x, self.y = server.t400_background.w - 160, 520

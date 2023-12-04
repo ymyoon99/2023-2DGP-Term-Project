@@ -7,11 +7,11 @@ import server
 from server_const import *
 
 
-class T200_Hurdle:
+class T200Hurdle:
     image = None
 
     def __init__(self, x=None, y=None):
-        if T200_Hurdle.image == None:
+        if T200Hurdle.image == None:
             self.image = load_image('./resource/hurdle.png')
 
         # x 좌표 설정
@@ -41,7 +41,7 @@ class T200_Hurdle:
                 game_world.remove_object(self)
 
 
-class T400_Hurdle:
+class T400Hurdle:
 
     def __init__(self):
         self.image = load_image('./resource/hurdle.png')

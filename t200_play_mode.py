@@ -10,8 +10,8 @@ from server_const import *
 import title_mode
 from t200_background import T200Background
 from t200_runner import Runner
-from hurdle import T200_Hurdle
-from endpoint import T200_Endpoint
+from hurdle import T200Hurdle
+from endpoint import T200Endpoint
 from t200_ai import T200Ai
 from ui import T200Ui
 from buttonaction import ButtonAction
@@ -40,10 +40,10 @@ def init():
     server.t200_runner = Runner()
     game_world.add_object(server.t200_runner, 1)
 
-    server.t200_hurdle = [T200_Hurdle() for _ in range(10)]
+    server.t200_hurdle = [T200Hurdle() for _ in range(10)]
     game_world.add_objects(server.t200_hurdle, 1)
 
-    server.t200_endpoint = T200_Endpoint()
+    server.t200_endpoint = T200Endpoint()
     game_world.add_object(server.t200_endpoint, 1)
 
     server.ai = T200Ai()

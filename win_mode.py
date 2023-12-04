@@ -1,5 +1,5 @@
 # External_Library
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_1, SDLK_2
+from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE
 from pico2d import get_events, load_image, clear_canvas, update_canvas, load_font
 
 # Internal_Library

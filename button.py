@@ -24,7 +24,6 @@ class T200Button:
         self.ButtonIndex = False
 
     def draw(self):
-        print(self.ButtonIndex)
         self.image.draw(self.x, self.y)
         # draw_rectangle(*self.get_bb())
 
@@ -64,7 +63,6 @@ class T400Button:
         self.ButtonIndex = False
 
     def draw(self):
-        print(self.ButtonIndex)
         self.image.draw(self.x, self.y)
         # draw_rectangle(*self.get_bb())
 

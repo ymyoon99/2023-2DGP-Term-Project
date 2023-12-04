@@ -10,8 +10,8 @@ from server_const import *
 import title_mode
 from t400_background import T400Background
 from t400_runner import Runner
-from hurdle import T400_Hurdle
-from endpoint import T400_Endpoint
+from hurdle import T400Hurdle
+from endpoint import T400Endpoint
 from t400_ai import T400Ai
 from ui import T400Ui
 from buttonaction import ButtonAction
@@ -40,10 +40,10 @@ def init():
     server.t400_runner = Runner()
     game_world.add_object(server.t400_runner, 1)
 
-    server.t400_hurdle = [T400_Hurdle() for _ in range(10)]
+    server.t400_hurdle = [T400Hurdle() for _ in range(10)]
     game_world.add_objects(server.t400_hurdle, 1)
 
-    server.t400_endpoint = T400_Endpoint()
+    server.t400_endpoint = T400Endpoint()
     game_world.add_object(server.t400_endpoint, 1)
 
     server.ai = T400Ai()
