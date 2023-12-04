@@ -150,7 +150,7 @@ class Jump:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))
 
-        runner.y += runner.gravity * JUMP_SPEED_PPS * 0.2/60
+        runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time() * 0.25
         runner.gravity -= 0.13
         runner.x += 1.5
 
@@ -249,8 +249,8 @@ class Runner:
         self.stamina = STAMINA_MAX  # 초기 스태미나 값
         self.dir = 0
         self.image = load_image('./resource/runner1_sprite_sheet.png')
-        self.font_time = load_font('./resource/ENCR10B.TTF', 40)
-        self.font_stamina = load_font('./resource/ENCR10B.TTF', 20)
+        self.font_time = load_font('./resource/Game.TTF', 40)
+        self.font_stamina = load_font('./resource/Game.TTF', 20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.gravity = 5
@@ -276,7 +276,7 @@ class Runner:
             self.start_time = get_time()
         running_time = get_time() - self.start_time
 
-        self.font_time.draw(10, 600, f'Running Time: {running_time:.03f}', (0, 0, 0))
+        self.font_time.draw(10, 600, f'RUNNING TIME: {running_time:.03f}', (0, 0, 0))
 
         # NUM_DRAW
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
