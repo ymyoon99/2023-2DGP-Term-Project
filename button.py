@@ -39,3 +39,4 @@ class Button:
     def handle_collision(self, group, other):
         if group == 'ButtonAction':
             server.ButtonIndex = True
+        print(server.ButtonIndex)
