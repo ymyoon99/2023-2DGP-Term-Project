@@ -4,7 +4,6 @@ ai = None
 ui = None
 buttonaction = None
 button = None
-ButtonIndex = False
 
 
 # track_200_mode

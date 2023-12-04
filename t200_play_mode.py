@@ -27,6 +27,7 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             server.t200_runner.handle_event(event)
+            server.button.handle_event(event)
 
 
 def init():

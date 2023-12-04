@@ -23,7 +23,6 @@ class ButtonAction:
         pass
 
     def get_bb(self):
-
         return self.x - 13, self.y - 48, self.x + 12, self.y + 48
 
     def handle_collision(self, group, other):

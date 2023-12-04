@@ -11,6 +11,6 @@ import logo_mode as release
 import t200_play_mode as test
 
 
-open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, 60)
+open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, True)
 game_framework.run(test)
 close_canvas()

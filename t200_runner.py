@@ -104,7 +104,7 @@ class Run:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
 
-        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time()
+        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time() * 2
         runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
 
@@ -150,7 +150,7 @@ class Jump:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))
 
-        runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time() * 0.25
+        runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time() * 0.15
         runner.gravity -= 0.13
         runner.x += 1.5
 
@@ -300,5 +300,5 @@ class Runner:
         end_time = get_time()
         if self.start_time is not None:
             lap_time = end_time - self.start_time
-            server.t200_lap_times.append(("t200", lap_time))
+            server.t200_lap_times.append(('200M', lap_time))
             self.start_time = end_time
