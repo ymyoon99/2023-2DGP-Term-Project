@@ -2,6 +2,10 @@
 
 ai = None
 ui = None
+buttonaction = None
+button = None
+ButtonIndex = False
+
 
 # track_200_mode
 t200_runner = None
@@ -15,4 +19,4 @@ t400_background = None
 t400_endpoint = None
 t400_hurdle = None
 
-lap_times = []
+t200_lap_times = []

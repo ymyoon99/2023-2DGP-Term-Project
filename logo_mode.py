@@ -13,7 +13,7 @@ def init():
     global image
     global logo_start_time
 
-    image = load_image('./resource/loading.png')
+    image = load_image('./background/loading.png')
     logo_start_time = get_time()
 
 

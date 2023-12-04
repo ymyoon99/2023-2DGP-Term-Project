@@ -293,12 +293,12 @@ class Runner:
             self.state_machine.handle_event(('COLLISION', 0))
         if group == 'runner:endpoint':
             self.record_lap_time()
-            print(server.lap_times[0])
+            print(server.t200_lap_times[0])
             game_framework.change_mode(win_mode)
 
     def record_lap_time(self):
         end_time = get_time()
         if self.start_time is not None:
             lap_time = end_time - self.start_time
-            server.lap_times.append(lap_time)
+            server.t200_lap_times.append(("t200", lap_time))
             self.start_time = end_time

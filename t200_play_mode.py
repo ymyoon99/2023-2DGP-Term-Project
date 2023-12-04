@@ -14,6 +14,8 @@ from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
 from ai import Ai
 from ui import StUi
+from buttonaction import ButtonAction
+from button import Button
 
 
 def handle_events():
@@ -28,6 +30,7 @@ def handle_events():
 
 
 def init():
+
     running = True
 
     server.t200_background = T200_Background()
@@ -48,6 +51,12 @@ def init():
     server.ui = StUi()
     game_world.add_object(server.ui, 1)
 
+    server.buttonaction = ButtonAction()
+    game_world.add_object(server.buttonaction, 1)
+
+    server.button = Button()
+    game_world.add_object(server.button, 1)
+
     # 충돌 상황 등록
     game_world.add_collision_pair('runner:hurdle', server.t200_runner, None)
     for hurdle in server.t200_hurdle:
@@ -58,6 +67,9 @@ def init():
 
     game_world.add_collision_pair('ai:endpoint', server.ai, None)
     game_world.add_collision_pair('ai:endpoint', None, server.t200_endpoint)
+
+    game_world.add_collision_pair('ButtonAction', server.button, None)
+    game_world.add_collision_pair('ButtonAction', None, server.buttonaction)
 
 
 def finish():
