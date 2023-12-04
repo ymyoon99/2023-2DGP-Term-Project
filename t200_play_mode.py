@@ -12,8 +12,8 @@ from background import T200_Background
 from t200_runner import Runner
 from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
-from ai import Ai
-from ui import StUi
+from t200_ai import T200Ai
+from ui import T200Ui
 from buttonaction import ButtonAction
 from button import Button
 
@@ -46,10 +46,10 @@ def init():
     server.t200_endpoint = T200_Endpoint()
     game_world.add_object(server.t200_endpoint, 1)
 
-    server.ai = Ai()
+    server.ai = T200Ai()
     game_world.add_object(server.ai, 1)
 
-    server.ui = StUi()
+    server.ui = T200Ui()
     game_world.add_object(server.ui, 1)
 
     server.buttonaction = ButtonAction()

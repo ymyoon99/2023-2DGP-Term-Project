@@ -104,7 +104,7 @@ class Run:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
 
-        runner.x += RUN_SPEED_PPS * game_framework.get_frame_time() * 2
+        runner.x += (RUN_SPEED_PPS * 2) * game_framework.get_frame_time()
         runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
 
@@ -126,8 +126,8 @@ class Walk:
     @staticmethod
     def do(runner):
         runner.stamina += game_framework.get_frame_time()
-        if runner.stamina > STAMINA_MAX - 1: runner.stamina = STAMINA_MAX
-        runner.x += runner.dir * RUN_SPEED_PPS / 3 * game_framework.get_frame_time()
+
+        runner.x += runner.dir * (RUN_SPEED_PPS / 3) * game_framework.get_frame_time()
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
 
@@ -150,7 +150,7 @@ class Jump:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))
 
-        runner.y += runner.gravity * JUMP_SPEED_PPS * game_framework.get_frame_time() * 0.15
+        runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
         runner.gravity -= 0.13
         runner.x += 1.5
 
@@ -262,6 +262,7 @@ class Runner:
         self.state_machine.update()
         self.x = clamp(50.0, self.x, server.t200_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t200_background.h - 50.0)
+        self.stamina = clamp(0, self.stamina, STAMINA_MAX)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -276,11 +277,15 @@ class Runner:
             self.start_time = get_time()
         running_time = get_time() - self.start_time
 
-        self.font_time.draw(10, 600, f'RUNNING TIME: {running_time:.03f}', (0, 0, 0))
+        minutes, seconds = divmod(running_time, 60)
+        running_time_formatted = f'{int(minutes):02d}.{seconds:.03f}'
 
-        # NUM_DRAW
+        self.font_time.draw(10, 600, f'RUNNING TIME: {running_time_formatted}', (0, 0, 0))
+
+        # STAMINA_HEAD_DRAW
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
-        # self.font_time.draw(10, 530, f'Stamina: {trunc(self.stamina):02d}', (255, 0, 0))
+
+        # BB_DRAW
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스
@@ -293,12 +298,16 @@ class Runner:
             self.state_machine.handle_event(('COLLISION', 0))
         if group == 'runner:endpoint':
             self.record_lap_time()
-            print(server.t200_lap_times[0])
+            print(server.lap_times[0])
             game_framework.change_mode(win_mode)
 
     def record_lap_time(self):
         end_time = get_time()
         if self.start_time is not None:
             lap_time = end_time - self.start_time
-            server.t200_lap_times.append(('200M', lap_time))
-            self.start_time = end_time
+            lap_time_seconds = round(lap_time, 3)
+            minutes, seconds = divmod(lap_time_seconds, 60)
+
+            lap_time_formatted = f'{int(minutes):02d}.{seconds:.03f}'
+
+            server.lap_times.append(('200M', lap_time_formatted))

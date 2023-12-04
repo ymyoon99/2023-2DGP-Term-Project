@@ -1,8 +1,4 @@
 from pico2d import *
-
-import game_framework
-
-import server
 from server_const import *
 
 
@@ -17,7 +13,7 @@ class ButtonAction:
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         pass

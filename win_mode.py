@@ -1,7 +1,6 @@
 # External_Library
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_1, SDLK_2
 from pico2d import get_events, load_image, clear_canvas, update_canvas, load_font
-from math import trunc
 
 # Internal_Library
 import game_framework
@@ -17,7 +16,8 @@ def init():
     global font
 
     image = load_image('./background/win.jpg')
-    font = load_font('./resource/Game.TTF', 40)
+    font = load_font('./resource/Game.TTF', 35)
+
 
 def finish():
     pass
@@ -30,7 +30,10 @@ def update():
 def draw():
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
-    font.draw(1000, 500, f'{server.t200_lap_times[-1]}', (0, 0, 0))
+
+    font.draw(860, 300, f'YOUR RECORD', (0, 0, 0))
+    font.draw(790, 250, f'{server.lap_times[-1]}', (255, 0, 0))
+
     update_canvas()
     pass
 

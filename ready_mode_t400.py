@@ -3,11 +3,10 @@ from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time
 
 # Internal_Library
 import game_framework
-import t400_play_mode
 from server_const import *
 
 # Linked_Mode
-import title_mode
+import t400_play_mode
 
 
 def init():
@@ -25,6 +24,7 @@ def finish():
 def update():
     global running
     global mode_start_time
+
     if get_time() - mode_start_time >= 3.0:
         game_framework.change_mode(t400_play_mode)
 

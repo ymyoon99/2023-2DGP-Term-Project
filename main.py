@@ -9,8 +9,9 @@ from server_const import *
 # Choice_Mode
 import logo_mode as release
 import t200_play_mode as test
+import lose_mode
 
 
-open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, True)
-game_framework.run(test)
+open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, 60)
+game_framework.run(lose_mode)
 close_canvas()
