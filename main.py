@@ -13,5 +13,5 @@ import lose_mode
 
 
 open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, 60)
-game_framework.run(lose_mode)
+game_framework.run(release)
 close_canvas()

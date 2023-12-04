@@ -1,17 +1,12 @@
-import time
 from math import trunc
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a, SDLK_UP, get_canvas_width, get_canvas_height
+    draw_rectangle, SDLK_a, SDLK_UP
 
-import game_world
 import game_framework
-import t200_play_mode
 import server
 import win_mode
-from background import T200_Background
 from server_const import *
-import title_mode
 
 
 def right_down(e):
@@ -256,7 +251,6 @@ class Runner:
         self.gravity = 5
         self.start_time = None
         self.hurt_start_time = None
-
 
     def update(self):
         self.state_machine.update()

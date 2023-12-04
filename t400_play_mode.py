@@ -1,18 +1,21 @@
 import random
-from pico2d import *
 
+from pico2d import *
 import game_framework
+
 import game_world
 import server
 from server_const import *
 
-from background import T400_Background
+import title_mode
+from t400_background import T400Background
 from t400_runner import Runner
 from hurdle import T400_Hurdle
 from endpoint import T400_Endpoint
-
-# Linked_Mode
-import title_mode
+from t400_ai import T400Ai
+from ui import T400Ui
+from buttonaction import ButtonAction
+from button import T400Button
 
 
 def handle_events():
@@ -24,12 +27,14 @@ def handle_events():
             game_framework.change_mode(title_mode)
         else:
             server.t400_runner.handle_event(event)
+            server.button.handle_event(event)
 
 
 def init():
+
     running = True
 
-    server.t400_background = T400_Background()
+    server.t400_background = T400Background()
     game_world.add_object(server.t400_background, 0)
 
     server.t400_runner = Runner()
@@ -41,6 +46,18 @@ def init():
     server.t400_endpoint = T400_Endpoint()
     game_world.add_object(server.t400_endpoint, 1)
 
+    server.ai = T400Ai()
+    game_world.add_object(server.ai, 1)
+
+    server.ui = T400Ui()
+    game_world.add_object(server.ui, 1)
+
+    server.buttonaction = ButtonAction()
+    game_world.add_object(server.buttonaction, 1)
+
+    server.button = T400Button()
+    game_world.add_object(server.button, 1)
+
     # 충돌 상황 등록
     game_world.add_collision_pair('runner:hurdle', server.t400_runner, None)
     for hurdle in server.t400_hurdle:
@@ -49,11 +66,17 @@ def init():
     game_world.add_collision_pair('runner:endpoint', server.t400_runner, None)
     game_world.add_collision_pair('runner:endpoint', None, server.t400_endpoint)
 
+    game_world.add_collision_pair('ai:endpoint', server.ai, None)
+    game_world.add_collision_pair('ai:endpoint', None, server.t400_endpoint)
+
+    game_world.add_collision_pair('ButtonAction', server.button, None)
+    game_world.add_collision_pair('ButtonAction', None, server.buttonaction)
+
 
 def finish():
     game_world.clear()
     game_world.clear_collision_pairs()
-    del server.t200_hurdle[:]
+    del server.t400_hurdle[:]
     pass
 
 

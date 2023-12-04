@@ -28,16 +28,16 @@ class T400Ai:
         self.build_behavior_tree()
 
     def get_bb(self):
-        sx = self.x - server.t200_background.window_left
-        sy = self.y - server.t200_background.window_bottom
+        sx = self.x - server.t400_background.window_left
+        sy = self.y - server.t400_background.window_bottom
         return sx - 20, sy - 47, sx + 15, sy + 35
 
     def update(self):
         self.bt.run()
 
     def draw(self):
-        sx = self.x - server.t200_background.window_left
-        sy = self.y - server.t200_background.window_bottom
+        sx = self.x - server.t400_background.window_left
+        sy = self.y - server.t400_background.window_bottom
 
         self.image.clip_draw(int(self.frame) * 580, self.action * 510, 580, 510, sx, sy, 100, 100)
 

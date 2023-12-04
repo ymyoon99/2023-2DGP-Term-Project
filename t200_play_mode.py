@@ -8,14 +8,14 @@ import server
 from server_const import *
 
 import title_mode
-from background import T200_Background
+from t200_background import T200Background
 from t200_runner import Runner
 from hurdle import T200_Hurdle
 from endpoint import T200_Endpoint
 from t200_ai import T200Ai
 from ui import T200Ui
 from buttonaction import ButtonAction
-from button import Button
+from button import T200Button
 
 
 def handle_events():
@@ -34,7 +34,7 @@ def init():
 
     running = True
 
-    server.t200_background = T200_Background()
+    server.t200_background = T200Background()
     game_world.add_object(server.t200_background, 0)
 
     server.t200_runner = Runner()
@@ -55,7 +55,7 @@ def init():
     server.buttonaction = ButtonAction()
     game_world.add_object(server.buttonaction, 1)
 
-    server.button = Button()
+    server.button = T200Button()
     game_world.add_object(server.button, 1)
 
     # 충돌 상황 등록
