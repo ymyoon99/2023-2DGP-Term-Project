@@ -1,7 +1,5 @@
 from pico2d import *
 import random
-import math
-import game_framework
 import game_world
 import server
 from server_const import *

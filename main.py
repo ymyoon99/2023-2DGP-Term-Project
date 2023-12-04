@@ -1,6 +1,6 @@
 # External_Library
 import pyglet
-from pico2d import open_canvas, delay, close_canvas
+from pico2d import open_canvas, close_canvas
 
 # Internal_Library
 import game_framework
