@@ -1,4 +1,3 @@
-import time
 from math import trunc
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
@@ -95,12 +94,12 @@ class Run:
 
     @staticmethod
     def do(runner):
-        runner.stamina -= 1/60
+        runner.stamina -= 0.15
         if runner.stamina <= 0:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
 
-        runner.x += (RUN_SPEED_PPS * 2) * game_framework.get_frame_time()
+        runner.x += (RUN_SPEED_PPS * 1) * game_framework.get_frame_time()
         runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
 
@@ -123,7 +122,7 @@ class Walk:
     def do(runner):
         runner.stamina += game_framework.get_frame_time()
 
-        runner.x += runner.dir * (RUN_SPEED_PPS / 3) * game_framework.get_frame_time()
+        runner.x += runner.dir * (RUN_SPEED_PPS / 2) * game_framework.get_frame_time()
         runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * game_framework.get_frame_time()) % 10
 
 
@@ -147,8 +146,8 @@ class Jump:
             runner.state_machine.handle_event(('COLLISION', 0))
 
         runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
-        runner.gravity -= 0.13
-        runner.x += 1.5
+        runner.gravity -= 0.16
+        runner.x += 1.7
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
@@ -156,7 +155,8 @@ class Jump:
             runner.state_machine.handle_event(('isGround', 0))
 
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
@@ -171,7 +171,7 @@ class Hurt:
         runner.frame = 0
         runner.y = PLAYER_1_GROUND
         runner.hurt_start_time = get_time()
-
+        runner.gravity = 5
 
     @staticmethod
     def exit(runner, e):
@@ -183,7 +183,8 @@ class Hurt:
         hurt_spend_time = hurt_check_time - runner.hurt_start_time
 
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:
@@ -253,12 +254,11 @@ class Runner:
         self.start_time = None
         self.hurt_start_time = None
 
-
     def update(self):
         self.state_machine.update()
         self.x = clamp(50.0, self.x, server.t400_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t400_background.h - 50.0)
-        self.stamina = clamp(0, self.stamina, STAMINA_MAX+1)
+        self.stamina = clamp(0, self.stamina, STAMINA_MAX + 1)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

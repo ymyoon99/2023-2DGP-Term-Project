@@ -94,7 +94,7 @@ class Run:
 
     @staticmethod
     def do(runner):
-        runner.stamina -= 0.1
+        runner.stamina -= 0.15
         if runner.stamina <= 0:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
@@ -155,7 +155,8 @@ class Jump:
             runner.state_machine.handle_event(('isGround', 0))
 
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
@@ -182,7 +183,8 @@ class Hurt:
         hurt_spend_time = hurt_check_time - runner.hurt_start_time
 
         if not runner.animation_done:
-            runner.frame = (runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+            runner.frame = (
+                                       runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:
@@ -256,7 +258,7 @@ class Runner:
         self.state_machine.update()
         self.x = clamp(50.0, self.x, server.t200_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t200_background.h - 50.0)
-        self.stamina = clamp(0, self.stamina, STAMINA_MAX+1)
+        self.stamina = clamp(0, self.stamina, STAMINA_MAX + 1)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

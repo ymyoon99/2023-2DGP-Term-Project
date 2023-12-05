@@ -11,12 +11,12 @@ import title_mode
 from t400_background import T400Background
 from t400_runner import Runner
 from hurdle import T400Hurdle
+from ai_hurdle import AiT400Hurdle
 from endpoint import T400Endpoint
 from t400_ai import T400Ai
 from ui import T400Ui
 from buttonaction import ButtonAction
 from button import T400Button
-from ai_hurdle import AiT400Hurdle
 
 
 def handle_events():

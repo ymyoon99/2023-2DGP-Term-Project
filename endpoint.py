@@ -7,7 +7,7 @@ from server_const import *
 class T200Endpoint:
 
     def __init__(self):
-        self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, 520
+        self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, ENDPOINT_Y
         # self.image = load_image('./resource/end_flag.png')
 
     def update(self):
@@ -23,7 +23,7 @@ class T200Endpoint:
     def get_bb(self):
         sx = self.x - server.t200_background.window_left
         sy = self.y - server.t200_background.window_bottom
-        return sx - 16, sy - 1000, sx + 23, sy + 30
+        return sx - 16, sy - 500, sx + 23, sy + 30
 
     def handle_collision(self, group, other):
         pass
@@ -32,7 +32,7 @@ class T200Endpoint:
 class T400Endpoint:
 
     def __init__(self):
-        self.x, self.y = server.t400_background.w - 160, 520
+        self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, ENDPOINT_Y
         # self.image = load_image('./resource/end_flag.png')
 
     def update(self):
