@@ -258,7 +258,7 @@ class Runner:
         self.state_machine.update()
         self.x = clamp(50.0, self.x, server.t400_background.w - 50.0)
         self.y = clamp(50.0, self.y, server.t400_background.h - 50.0)
-        self.stamina = clamp(0, self.stamina, STAMINA_MAX)
+        self.stamina = clamp(0, self.stamina, STAMINA_MAX+1)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

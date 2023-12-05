@@ -24,7 +24,6 @@ class T200Ai:
         self.frame = 0
         self.speed = 0
 
-        self.tx, self.ty = 0, 0
         self.build_behavior_tree()
 
     def get_bb(self):
@@ -56,6 +55,13 @@ class T200Ai:
         self.frame = (self.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
         return BehaviorTree.RUNNING
+
+    def check_hurdle(self):
+        pass
+
+    def do_jump(self):
+        pass
+
 
     def build_behavior_tree(self):
         a1 = Action('Set random location', self.run_to_end)

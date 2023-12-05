@@ -7,13 +7,25 @@ from server_const import *
 
 class T200Hurdle:
     image = None
+    hurdle_count = 0  # 허들 객체의 수를 추적하기 위한 클래스 변수
 
     def __init__(self, x=None, y=None):
         if T200Hurdle.image == None:
-            self.image = load_image('./resource/hurdle.png')
+            T200Hurdle.image = load_image('./resource/hurdle.png')
 
         # x 좌표 설정
-        self.x = x if x else random.randint(HURDLE_CLAMP, server.t200_background.w - HURDLE_CLAMP)
+        if x is None:
+            num_hurdles = 8
+            interval = 200
+            center_x = server.t200_background.w // 2
+
+            # 중심에서부터 200씩 간격을 두고 총 10번 생성
+            index = T200Hurdle.hurdle_count
+            self.x = center_x + (index * interval) - (num_hurdles * interval // 2)
+            T200Hurdle.hurdle_count += 1
+        else:
+            self.x = x
+
         self.y = y if y else RUNNER_HURDLE_Y
 
     def update(self):

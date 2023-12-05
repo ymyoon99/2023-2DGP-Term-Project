@@ -40,7 +40,7 @@ def init():
     server.t200_runner = Runner()
     game_world.add_object(server.t200_runner, 1)
 
-    server.t200_hurdle = [T200Hurdle() for _ in range(10)]
+    server.t200_hurdle = [T200Hurdle() for _ in range(8)]
     game_world.add_objects(server.t200_hurdle, 1)
 
     server.t200_endpoint = T200Endpoint()
