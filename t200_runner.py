@@ -99,7 +99,7 @@ class Run:
             runner.stamina = 0
             runner.state_machine.handle_event(('COLLISION', 0))  # Transition to Hurt state
 
-        runner.x += (RUN_SPEED_PPS * 2) * game_framework.get_frame_time()
+        runner.x += (RUN_SPEED_PPS * 1) * game_framework.get_frame_time()
         runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * game_framework.get_frame_time()) % 8
 
 
@@ -146,8 +146,8 @@ class Jump:
             runner.state_machine.handle_event(('COLLISION', 0))
 
         runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
-        runner.gravity -= 0.13
-        runner.x += 1.5
+        runner.gravity -= 0.16
+        runner.x += 3
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
