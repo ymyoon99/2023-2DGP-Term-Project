@@ -20,4 +20,4 @@ t400_hurdle = None
 t400_ai = None
 t400_background = None
 
-lap_times = []
+lap_times = [0] * 5

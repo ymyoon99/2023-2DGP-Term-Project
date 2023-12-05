@@ -10,18 +10,16 @@ class T200Hurdle:
     hurdle_count = 0  # 허들 객체의 수를 추적하기 위한 클래스 변수
 
     def __init__(self, x=None, y=None):
-        if T200Hurdle.image == None:
+        if T200Hurdle.image is None:
             T200Hurdle.image = load_image('./resource/hurdle.png')
 
         # x 좌표 설정
         if x is None:
-            num_hurdles = 8
             interval = 200
             center_x = server.t200_background.w // 2
 
             # 중심에서부터 200씩 간격을 두고 총 10번 생성
-            index = T200Hurdle.hurdle_count
-            self.x = center_x + (index * interval) - (num_hurdles * interval // 2)
+            self.x = center_x + (T200Hurdle.hurdle_count * interval)
             T200Hurdle.hurdle_count += 1
         else:
             self.x = x
@@ -49,6 +47,13 @@ class T200Hurdle:
         if group == 'runner:hurdle':
             if self in game_world.objects[1]:  # 해당 객체가 게임 월드에 있는지 확인
                 game_world.remove_object(self)
+
+    def reset_position(self):
+        interval = 200
+        center_x = server.t200_background.w // 2
+        T200Hurdle.hurdle_count = 0
+        self.x = center_x + (T200Hurdle.hurdle_count * interval)
+        T200Hurdle.hurdle_count += 1
 
 
 class T400Hurdle:

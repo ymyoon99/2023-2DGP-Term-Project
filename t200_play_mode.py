@@ -76,7 +76,7 @@ def init():
 def finish():
     game_world.clear()
     game_world.clear_collision_pairs()
-    del server.t200_hurdle[:]
+    T200Hurdle.reset_position(T200Hurdle)
     pass
 
 
