@@ -1,15 +1,14 @@
 import time
 from math import trunc
 
-from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle, SDLK_d, SDLK_s, SDLK_f, SDLK_a, SDLK_UP, get_canvas_width, get_canvas_height
+from pico2d import load_image, draw_rectangle
 
 import lose_mode
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import game_framework
 import server
 from server_const import *
-import t200_play_mode
+
 
 
 class T200Ai:

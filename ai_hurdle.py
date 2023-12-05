@@ -1,6 +1,4 @@
 from pico2d import *
-import random
-import game_world
 import server
 from server_const import *
 
