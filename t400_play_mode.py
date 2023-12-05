@@ -16,6 +16,7 @@ from t400_ai import T400Ai
 from ui import T400Ui
 from buttonaction import ButtonAction
 from button import T400Button
+from ai_hurdle import AiT400Hurdle
 
 
 def handle_events():
@@ -38,16 +39,19 @@ def init():
     game_world.add_object(server.t400_background, 0)
 
     server.t400_runner = Runner()
-    game_world.add_object(server.t400_runner, 1)
+    game_world.add_object(server.t400_runner, 2)
 
     server.t400_hurdle = [T400Hurdle() for _ in range(16)]
     game_world.add_objects(server.t400_hurdle, 1)
+
+    server.t400_ai_hurdle = [AiT400Hurdle() for _ in range(16)]
+    game_world.add_objects(server.t400_ai_hurdle, 1)
 
     server.t400_endpoint = T400Endpoint()
     game_world.add_object(server.t400_endpoint, 1)
 
     server.ai = T400Ai()
-    game_world.add_object(server.ai, 1)
+    game_world.add_object(server.ai, 2)
 
     server.ui = T400Ui()
     game_world.add_object(server.ui, 1)
@@ -77,6 +81,7 @@ def finish():
     game_world.clear()
     game_world.clear_collision_pairs()
     T400Hurdle.reset_position(T400Hurdle)
+    AiT400Hurdle.reset_position(AiT400Hurdle)
     pass
 
 

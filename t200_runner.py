@@ -147,7 +147,7 @@ class Jump:
 
         runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
         runner.gravity -= 0.16
-        runner.x += 3
+        runner.x += 1.7
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
@@ -170,7 +170,7 @@ class Hurt:
         runner.frame = 0
         runner.y = PLAYER_1_GROUND
         runner.hurt_start_time = get_time()
-
+        runner.gravity = 5
 
     @staticmethod
     def exit(runner, e):

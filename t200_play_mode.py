@@ -11,6 +11,7 @@ import title_mode
 from t200_background import T200Background
 from t200_runner import Runner
 from hurdle import T200Hurdle
+from ai_hurdle import AiT200Hurdle
 from endpoint import T200Endpoint
 from t200_ai import T200Ai
 from ui import T200Ui
@@ -38,16 +39,19 @@ def init():
     game_world.add_object(server.t200_background, 0)
 
     server.t200_runner = Runner()
-    game_world.add_object(server.t200_runner, 1)
+    game_world.add_object(server.t200_runner, 2)
 
     server.t200_hurdle = [T200Hurdle() for _ in range(8)]
     game_world.add_objects(server.t200_hurdle, 1)
+
+    server.t200_ai_hurdle = [AiT200Hurdle() for _ in range(8)]
+    game_world.add_objects(server.t200_ai_hurdle, 1)
 
     server.t200_endpoint = T200Endpoint()
     game_world.add_object(server.t200_endpoint, 1)
 
     server.ai = T200Ai()
-    game_world.add_object(server.ai, 1)
+    game_world.add_object(server.ai, 2)
 
     server.ui = T200Ui()
     game_world.add_object(server.ui, 1)
@@ -77,6 +81,7 @@ def finish():
     game_world.clear()
     game_world.clear_collision_pairs()
     T200Hurdle.reset_position(T200Hurdle)
+    AiT200Hurdle.reset_position(AiT200Hurdle)
     pass
 
 
