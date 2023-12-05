@@ -40,7 +40,7 @@ def init():
     server.t400_runner = Runner()
     game_world.add_object(server.t400_runner, 1)
 
-    server.t400_hurdle = [T400Hurdle() for _ in range(10)]
+    server.t400_hurdle = [T400Hurdle() for _ in range(16)]
     game_world.add_objects(server.t400_hurdle, 1)
 
     server.t400_endpoint = T400Endpoint()
@@ -76,7 +76,7 @@ def init():
 def finish():
     game_world.clear()
     game_world.clear_collision_pairs()
-    del server.t400_hurdle[:]
+    T400Hurdle.reset_position(T400Hurdle)
     pass
 
 

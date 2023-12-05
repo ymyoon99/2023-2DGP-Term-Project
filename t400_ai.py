@@ -19,7 +19,7 @@ class T400Ai:
     def __init__(self):
         self.x, self.y = PLAYER_START_LINE, AI_GROUND
         self.image = load_image('./resource/runner2_sprite_sheet.png')
-        self.dir = 0.0      # radian 값으로 방향을 표시
+        self.dir = 0.0  # radian 값으로 방향을 표시
         self.action = 4
         self.frame = 0
         self.speed = 0
