@@ -4,6 +4,7 @@ import tomllib
 import PyInstaller.__main__
 import importlib
 
+
 def get_module_installation_path(module_name):
     try:
         module_spec = importlib.util.find_spec(module_name)
@@ -13,7 +14,6 @@ def get_module_installation_path(module_name):
         pass
 
     return None
-
 
 
 print(' py to exe with PyInstaller '.center(80, '='))
@@ -29,7 +29,6 @@ try:
 except:
     print(f'설정 파일 {settings_file} 파일을 읽는 과정에서 문제가 발생했습니다. 파일 존재 및 이상 여부를 확인하세요. 변환을 중단합니다.')
     exit(-1)
-
 
 # 설정된 파일들이 실제 존재하는지 체크
 
@@ -73,7 +72,7 @@ PyInstaller.__main__.run([
 print('3. 관련 파일들을 복사합니다......')
 
 # sdl dll 파일들을 찾아서, pico2d 폴더로 복사
-sdl2dll_path = get_module_installation_path('sdl2dll')+'/dll'
+sdl2dll_path = get_module_installation_path('sdl2dll') + '/dll'
 main_name = os.path.splitext(main_file)[0]
 dist_path += f'/{main_name}'
 shutil.copytree(sdl2dll_path, dist_path + '/pico2d')
@@ -86,7 +85,5 @@ for dn in data_folders:
     shutil.copytree(dn, f'{dist_path}/{dn}')
     print(f'데이터 폴더 복사: {dn} -----> {dist_path}/{dn}')
 
-
 print('4. 변환이 완료됐습니다......')
 print(f'출력 폴더: File "{dist_path}", line {0}')
-

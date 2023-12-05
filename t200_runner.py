@@ -156,7 +156,7 @@ class Jump:
 
         if not runner.animation_done:
             runner.frame = (
-                                       runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+                                   runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
@@ -184,7 +184,7 @@ class Hurt:
 
         if not runner.animation_done:
             runner.frame = (
-                                       runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
+                                   runner.frame + FRAMES_PER_ACTION_10 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 10
             if int(runner.frame) == 9:
                 runner.animation_done = True
         else:
@@ -276,13 +276,14 @@ class Runner:
         minutes, seconds = divmod(running_time, 60)
         running_time_formatted = f'{int(minutes):02d}.{seconds:.03f}'
 
-        self.font_time.draw(10, 600, f'RUNNING TIME: {running_time_formatted}', (0, 0, 0))
+        self.font_time.draw(22, 680, f'RUNNING TIME: {running_time_formatted}', (0, 0, 0))
+        self.font_time.draw(22, 540, f'200M', (0, 0, 0))
 
         # STAMINA_HEAD_DRAW
         self.font_stamina.draw(sx - 15, sy + 55, f'{trunc(self.stamina):02d}', (60, 179, 113))
 
         # BB_DRAW
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def get_bb(self):  # 히트 박스
         sx = self.x - server.t200_background.window_left

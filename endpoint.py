@@ -15,7 +15,8 @@ class T200Endpoint:
 
     def draw(self):
         # self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def handle_event(self, event):
         pass
@@ -32,7 +33,7 @@ class T200Endpoint:
 class T400Endpoint:
 
     def __init__(self):
-        self.x, self.y = server.t200_background.w - ENDPOINT_X_CLAMP, ENDPOINT_Y
+        self.x, self.y = server.t400_background.w - ENDPOINT_X_CLAMP, ENDPOINT_Y
         # self.image = load_image('./resource/end_flag.png')
 
     def update(self):
@@ -40,7 +41,8 @@ class T400Endpoint:
 
     def draw(self):
         # self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def handle_event(self, event):
         pass

@@ -80,4 +80,3 @@ class T400Button:
     def handle_collision(self, group, other):
         if group == 'ButtonAction':
             self.ButtonIndex = True
-

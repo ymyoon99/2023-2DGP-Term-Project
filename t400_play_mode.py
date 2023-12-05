@@ -32,7 +32,6 @@ def handle_events():
 
 
 def init():
-
     running = True
 
     server.t400_background = T400Background()

@@ -33,7 +33,7 @@ class T200Hurdle:
         sx = self.x - server.t200_background.window_left
         sy = self.y - server.t200_background.window_bottom
         self.image.draw(sx, sy)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         pass
@@ -84,7 +84,7 @@ class T400Hurdle:
         sx = self.x - server.t400_background.window_left
         sy = self.y - server.t400_background.window_bottom
         self.image.draw(sx, sy)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
         pass

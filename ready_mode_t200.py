@@ -10,7 +10,6 @@ import t200_play_mode
 
 
 def init():
-
     global image
     global mode_start_time
 
@@ -31,7 +30,6 @@ def update():
 
 
 def draw():
-
     clear_canvas()
     image.draw(CANVAS_CENTER_X, CANVAS_CENTER_Y)
     update_canvas()

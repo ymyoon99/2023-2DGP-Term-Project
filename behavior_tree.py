@@ -1,12 +1,15 @@
-
 level = 0
+
+
 def indent():
     global level
     level += 1
 
+
 def unindent():
     global level
     level -= 1
+
 
 def print_indent():
     for i in range(level):
@@ -36,9 +39,11 @@ class Node:
 
     def add_child(self, child):
         self.children.append(child)
+
     def add_children(self, *children):
         for child in children:
             self.children.append(child)
+
     @staticmethod
     def show_result(f):
         def inner(self):
@@ -46,7 +51,7 @@ class Node:
             # end = '....' if result == BehaviorTree.RUNNING else '\n'
             end = '\n'
             color = '\033[2;31;43m' if BehaviorTree.run_mode == 'MONITOR' else '\033[0;37;40m'
-            print(color + f'[{self.__class__.__name__:10s}] {self.name:40s} ==> ({result})', end = end)
+            print(color + f'[{self.__class__.__name__:10s}] {self.name:40s} ==> ({result})', end=end)
             return result
 
         # return inner
@@ -72,12 +77,10 @@ class Selector(Node):
             if child.has_condition:
                 self.has_condition = True
 
-
     def reset(self):
         self.prev_running_pos = 0
         for node in self.children:
             node.reset()
-
 
     @Node.show_result
     def run(self):
@@ -90,14 +93,6 @@ class Selector(Node):
 
         self.value = BehaviorTree.FAIL
         return self.value
-
-
-
-
-
-
-
-
 
 
 class Sequence(Node):
@@ -119,8 +114,6 @@ class Sequence(Node):
             if child.has_condition:
                 self.has_condition = True
 
-
-
     @Node.show_result
     def run(self):
         for child in self.children:
@@ -131,7 +124,6 @@ class Sequence(Node):
 
         self.value = BehaviorTree.SUCCESS
         return self.value
-
 
 
 class Action(Node):
@@ -159,7 +151,6 @@ class Action(Node):
     def run(self):
         self.value = self.func(*self.args)
         return self.value
-
 
     # @Node.show_result
     # def monitor_run(self):

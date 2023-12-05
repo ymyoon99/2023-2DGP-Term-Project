@@ -17,6 +17,7 @@ def init():
     image = load_image('./background/lose.jpg')
     font = load_font('./resource/Game.TTF', 40)
 
+
 def finish():
     pass
 
