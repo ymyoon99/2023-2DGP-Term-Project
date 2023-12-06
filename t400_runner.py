@@ -148,7 +148,7 @@ class Jump:
 
         runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
         runner.gravity -= 0.16
-        runner.x += 1.7
+        runner.x += 1.8
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5

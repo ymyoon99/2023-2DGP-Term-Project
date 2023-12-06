@@ -148,7 +148,7 @@ class Jump:
 
         runner.y += runner.gravity * (JUMP_SPEED_PPS * 0.35) * game_framework.get_frame_time()
         runner.gravity -= 0.16
-        runner.x += 1.7
+        runner.x += 1.8
 
         if runner.y < PLAYER_1_GROUND:
             runner.gravity = 5
@@ -156,8 +156,7 @@ class Jump:
             runner.state_machine.handle_event(('isGround', 0))
 
         if not runner.animation_done:
-            runner.frame = (
-                                   runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
+            runner.frame = (runner.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
             if int(runner.frame) == 7:
                 runner.animation_done = True
 
