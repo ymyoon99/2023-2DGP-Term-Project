@@ -1,5 +1,5 @@
 # External_Library
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_1, SDLK_2
+from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE, SDLK_1, SDLK_2, SDLK_3
 from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time
 
 # Internal_Library
@@ -9,12 +9,13 @@ from server_const import *
 # Linked_Mode
 import tracklist
 import leaderboard
+import keyguide
 
 
 def init():
     global image
 
-    image = load_image('./background/title.jpg')
+    image = load_image('./background/title.png')
 
 
 def finish():
@@ -43,3 +44,5 @@ def handle_events(title_mode=None):
             game_framework.change_mode(tracklist)
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_2):
             game_framework.change_mode(leaderboard)
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_3):
+            game_framework.change_mode(keyguide)

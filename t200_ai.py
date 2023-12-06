@@ -21,7 +21,7 @@ class T200Ai:
         self.speed = 0
         self.build_behavior_tree()
         self.gravity = 5
-        self.jump_x_locations = [3150 + i * 200 for i in range(8)] + [6100]
+        self.jump_x_locations = []
         self.jx = 0.0
         self.loc_no = 0
         self.now_Jump = False
@@ -32,6 +32,8 @@ class T200Ai:
         return sx - 20, sy - 47, sx + 15, sy + 35
 
     def update(self):
+        self.jump_x_locations = [3150] + [3350 + i * 200 for i in range(7)] + [6100]
+
         self.frame = (self.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
 
         if self.now_Jump:
