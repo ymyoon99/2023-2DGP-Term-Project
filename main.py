@@ -11,5 +11,5 @@ import t200_play_mode as test
 
 # Programmed for 60 Fps
 open_canvas(CANVAS_WEIGHT, CANVAS_HEIGHT, 60)
-game_framework.run(test)
+game_framework.run(release)
 close_canvas()

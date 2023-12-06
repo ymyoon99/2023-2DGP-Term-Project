@@ -13,6 +13,12 @@ class T200Button:
         self.direction = 1
         self.ButtonIndex = False
 
+        self.success = load_wav('./resource/sound/buttonsucc.wav')
+        self.success.set_volume(32)
+
+        self.fail = load_wav('./resource/sound/buttonfail.wav')
+        self.fail.set_volume(32)
+
     def update(self):
         self.x += self.speed * self.direction
 
@@ -30,9 +36,11 @@ class T200Button:
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             if self.ButtonIndex:
+                self.success.play()
                 server.t200_runner.stamina += 10
                 self.x, self.y = BUTTON_X_LEFT, BUTTONACTION_Y  # 성공할 시 버튼 초기화
             else:
+                self.fail.play()
                 server.t200_runner.stamina -= 10
 
     def get_bb(self):
@@ -52,6 +60,12 @@ class T400Button:
         self.direction = 1
         self.ButtonIndex = False
 
+        self.success = load_wav('./resource/sound/buttonsucc.wav')
+        self.success.set_volume(32)
+
+        self.fail = load_wav('./resource/sound/buttonfail.wav')
+        self.fail.set_volume(32)
+
     def update(self):
         self.x += self.speed * self.direction
 
@@ -69,9 +83,11 @@ class T400Button:
     def handle_event(self, event):
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             if self.ButtonIndex:
+                self.success.play()
                 server.t400_runner.stamina += 10
                 self.x, self.y = BUTTON_X_LEFT, BUTTONACTION_Y  # 성공할 시 버튼 초기화
             else:
+                self.fail.play()
                 server.t400_runner.stamina -= 10
 
     def get_bb(self):
