@@ -39,7 +39,8 @@ class T200Ai:
         if self.now_Jump:
             self.do_jump()
         elif self.x >= self.jump_x_locations[self.loc_no]:
-            self.get_jump_x()
+            self.loc_no = (self.loc_no + 1) % len(self.jump_x_locations)
+            # self.get_jump_x()
             self.now_Jump = True
         else:
             self.run_to_end()
@@ -78,10 +79,10 @@ class T200Ai:
             self.now_Jump = False
             self.frame = 0
 
-    def get_jump_x(self):
-        # 다음 점프 좌표 설정
-        self.jx = self.jump_x_locations[self.loc_no]
-        self.loc_no = (self.loc_no + 1) % len(self.jump_x_locations)
+    # def get_jump_x(self):
+    #     # 다음 점프 좌표 설정
+    #     self.jx = self.jump_x_locations[self.loc_no]
+    #     self.loc_no = (self.loc_no + 1) % len(self.jump_x_locations)
 
     def build_behavior_tree(self):
         pass

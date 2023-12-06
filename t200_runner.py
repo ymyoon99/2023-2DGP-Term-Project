@@ -1,7 +1,7 @@
 from math import trunc
 
 from pico2d import get_time, load_image, load_font, clamp, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, \
-    draw_rectangle, SDLK_a, SDLK_UP
+    draw_rectangle, SDLK_a, SDLK_UP, load_wav
 
 import game_framework
 import server
@@ -130,10 +130,11 @@ class Jump:
 
     @staticmethod
     def enter(runner, e):
-        runner.stamina -= 20
+        runner.stamina -= 15
         runner.action = 3
         runner.frame = 0
         runner.animation_done = False
+        runner.jumpsound.play()
 
     @staticmethod
     def exit(runner, e):
@@ -172,6 +173,7 @@ class Hurt:
         runner.y = PLAYER_1_GROUND
         runner.hurt_start_time = get_time()
         runner.gravity = 5
+        runner.hurtsound.play()
 
     @staticmethod
     def exit(runner, e):
@@ -253,6 +255,12 @@ class Runner:
         self.gravity = 5
         self.start_time = None
         self.hurt_start_time = None
+
+        self.jumpsound = load_wav('./resource/sound/jump.wav')
+        self.jumpsound.set_volume(32)
+
+        self.hurtsound = load_wav('./resource/sound/hurt.wav')
+        self.hurtsound.set_volume(32)
 
     def update(self):
         self.state_machine.update()

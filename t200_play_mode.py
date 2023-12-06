@@ -32,7 +32,13 @@ def handle_events():
 
 
 def init():
+    global ingamebgm
+
     running = True
+
+    ingamebgm = load_music('./resource/sound/ingamebgm.mp3')
+    ingamebgm.set_volume(20)
+    ingamebgm.repeat_play()
 
     server.t200_background = T200Background()
     game_world.add_object(server.t200_background, 0)
@@ -81,6 +87,7 @@ def finish():
     game_world.clear_collision_pairs()
     T200Hurdle.reset_position(T200Hurdle)
     AiT200Hurdle.reset_position(AiT200Hurdle)
+    ingamebgm.stop()
     pass
 
 
