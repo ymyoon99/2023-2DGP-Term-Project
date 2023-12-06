@@ -32,7 +32,7 @@ class T200Ai:
         return sx - 20, sy - 47, sx + 15, sy + 35
 
     def update(self):
-        self.jump_x_locations = [3150] + [3350 + i * 200 for i in range(7)] + [6100]
+        self.jump_x_locations = [3150 + i * 200 for i in range(8)] + [6100]
 
         self.frame = (self.frame + FRAMES_PER_ACTION_8 * ACTION_PER_TIME * 0.5 * game_framework.get_frame_time()) % 8
 
@@ -83,22 +83,5 @@ class T200Ai:
         self.jx = self.jump_x_locations[self.loc_no]
         self.loc_no = (self.loc_no + 1) % len(self.jump_x_locations)
 
-    def is_front_hurdle(self):
-        # 현재 좌표가 점프 좌표와 거의 같으면 성공
-        if trunc(self.x) == self.jx:
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.FAIL
-
     def build_behavior_tree(self):
-        a1 = Action('Run to endpoint', self.run_to_end)
-        a2 = Action('Do Jump', self.do_jump)
-        a3 = Action('Get jump point', self.get_jump_x)
-
-        c1 = Condition('Check Coordinates', self.is_front_hurdle)
-
-        SEQ_run_and_jump = Sequence('특정 좌표에서 점프', a3, c1, a2)
-
-        root = Sequence('AI Behavior', a1, SEQ_run_and_jump)
-
-        self.bt = BehaviorTree(root)
+        pass
